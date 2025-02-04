@@ -3,7 +3,7 @@ window.BACKEND_URL = "http://localhost/";
 document.addEventListener("DOMContentLoaded",(event) => {
     const html = document.querySelector("html");
     var current_stage = 0;
-    var prev_stage = -1;
+    var prev_stage = 0;
     function change_stage()
     {
         let prev_stage_page = document.querySelector(".stage_" + prev_stage);
@@ -55,7 +55,10 @@ document.addEventListener("DOMContentLoaded",(event) => {
         // Обработчик клика
         const handleMainButtonClick = () => {
             current_stage++;
-            prev_stage++;
+            if(current_stage - prev_stage > 1)
+            {
+                prev_stage++;
+            }
             change_stage();
             //Telegram.WebApp.MainButton
             //    .hide();
@@ -69,8 +72,12 @@ document.addEventListener("DOMContentLoaded",(event) => {
 
         // Обработчик клика
         const handleBackButtonClick = () => {
-            prev_stage = current_stage;
             current_stage--
+            if(prev_stage - current_stage > 1)
+            {
+                prev_stage--;
+            }
+
             change_stage();
         };
         // Инициализация при загрузке
