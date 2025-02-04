@@ -2,6 +2,35 @@ window.BACKEND_URL = "http://localhost/";
 
 document.addEventListener("DOMContentLoaded",(event) => {
     const html = document.querySelector("html");
+    var current_stage = 0;
+    var prev_stage = -1;
+    function change_stage()
+    {
+        let prev_stage_page = document.querySelector(".stage_" + prev_stage);
+        let current_stage_page = document.querySelector(".stage_" + current_stage);
+        prev_stage_page.style = null;
+        current_stage_page.style.display = "block";
+
+        if(current_stage_page > 0)
+        {
+            Telegram.WebApp.BackButton
+                .show()
+        }
+        else
+        {
+            Telegram.WebApp.BackButton
+                .hide()
+        }
+        if(prev_stage - current_stage == -1) // вперед
+        {
+
+        }
+        else // назад
+        {
+
+        }
+    }
+
     function initTelegramWebApp()
     {
         //let telegramTest = document.querySelector("#telegramTest");
@@ -25,12 +54,28 @@ document.addEventListener("DOMContentLoaded",(event) => {
 
         // Обработчик клика
         const handleMainButtonClick = () => {
-            Telegram.WebApp.MainButton
-                .hide();
+            current_stage++;
+            prev_stage++;
+            change_stage();
+            //Telegram.WebApp.MainButton
+            //    .hide();
         };
 
+
+        const initBackButton = () => {
+            Telegram.WebApp.BackButton
+                .onClick(handleBackButtonClick)
+        };
+
+        // Обработчик клика
+        const handleBackButtonClick = () => {
+            prev_stage = current_stage;
+            current_stage--
+            change_stage();
+        };
         // Инициализация при загрузке
         initMainButton();
+        initBackButton();
     }
     function checkTheme()
     {
