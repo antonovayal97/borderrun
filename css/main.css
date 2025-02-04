@@ -1863,6 +1863,34 @@ body {
   font-style: normal;
 }
 
+.fade-out {
+  animation: fadeOut 0.3s forwards;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .stage {
   display: none;
   min-height: 100vh;
