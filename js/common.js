@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded",(event) => {
         prev_stage_page.style = null;
         current_stage_page.style.display = "block";
 
-        if(current_stage_page > 0)
+        if(current_stage > 0)
         {
             Telegram.WebApp.BackButton
                 .show()
