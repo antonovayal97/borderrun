@@ -2,88 +2,56 @@ window.BACKEND_URL = "http://localhost/";
 
 document.addEventListener("DOMContentLoaded",(event) => {
     const html = document.querySelector("html");
-    var current_stage = 0;
-    var prev_stage = 0;
-    function change_stage()
-    {
-        let prev_stage_page = document.querySelector(".stage_" + prev_stage);
-        let current_stage_page = document.querySelector(".stage_" + current_stage);
-        prev_stage_page.style = null;
-        current_stage_page.style.display = "block";
+    
+    let currentStage = 0; // Текущий этап
+const totalStages = 3; // Общее количество этапов
 
-        if(current_stage > 0)
-        {
-            Telegram.WebApp.BackButton
-                .show()
-        }
-        else
-        {
-            Telegram.WebApp.BackButton
-                .hide()
-        }
-        if(prev_stage - current_stage == -1) // вперед
-        {
+function changeStage(newStage) {
+    const prevStage = currentStage;
+    currentStage = newStage;
 
-        }
-        else // назад
-        {
+    // Скрываем предыдущий этап
+    document.querySelector(`.stage_${prevStage}`).style.display = 'none';
+    // Показываем текущий этап
+    document.querySelector(`.stage_${currentStage}`).style.display = 'block';
 
-        }
-    }
+    // Управление кнопкой "Назад"
+    Telegram.WebApp.BackButton[currentStage > 0 ? 'show' : 'hide']();
 
-    function initTelegramWebApp()
-    {
-        //let telegramTest = document.querySelector("#telegramTest");
-        //telegramTest.innerText = JSON.stringify(window.Telegram.WebApp.initData, null, 4);
+    // Обновление основной кнопки
+    updateMainButton();
+}
 
-        // Инициализация WebApp
-        Telegram.WebApp.ready();
-
-        // Конфигурация кнопки
-        const initMainButton = () => {
-            Telegram.WebApp.MainButton
-                .setText("Подтвердить")
-                .setParams({
-                    color: Telegram.WebApp.themeParams.button_color,
-                    text_color: Telegram.WebApp.themeParams.button_text_color
-                })
-                .onClick(handleMainButtonClick)
-                .enable()
+function updateMainButton() {
+    const mainButton = Telegram.WebApp.MainButton;
+    
+    if(currentStage === totalStages - 1) {
+        mainButton.setText("Завершить")
+            .onClick(() => {
+                console.log("finish")//Telegram.WebApp.sendData(JSON.stringify({action: 'finish'}));
+            })
+            .show();
+        } else {
+            mainButton.setText("Далее")
+                .onClick(() => changeStage(currentStage + 1))
                 .show();
-        };
-
-        // Обработчик клика
-        const handleMainButtonClick = () => {
-            current_stage++;
-            if(current_stage - prev_stage > 1)
-            {
-                prev_stage++;
-            }
-            change_stage();
-            //Telegram.WebApp.MainButton
-            //    .hide();
-        };
-
-
-        const initBackButton = () => {
-            Telegram.WebApp.BackButton
-                .onClick(handleBackButtonClick)
-        };
-
-        // Обработчик клика
-        const handleBackButtonClick = () => {
-            current_stage--
-            if(prev_stage - current_stage > 1)
-            {
-                prev_stage--;
-            }
-
-            change_stage();
-        };
-        // Инициализация при загрузке
-        initMainButton();
-        initBackButton();
+        }
     }
+
+    function initTelegramWebApp() {
+        Telegram.WebApp.ready();
+        
+        // Инициализация кнопки "Назад"
+        Telegram.WebApp.BackButton
+            .onClick(() => changeStage(currentStage - 1))
+            .hide();
+
+        // Первоначальная настройка
+        changeStage(0); // Показываем первый этап
+        updateMainButton();
+    }
+
+    
     function checkTheme()
     {
         var theme_controllers = document.querySelectorAll(".theme-controller");
