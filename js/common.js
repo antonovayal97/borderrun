@@ -4,8 +4,33 @@ document.addEventListener("DOMContentLoaded",(event) => {
     const html = document.querySelector("html");
     function initTelegramWebApp()
     {
-        let telegramTest = document.querySelector("#telegramTest");
-        telegramTest.innerText = JSON.stringify(window.Telegram.WebApp.initData, null, 4);
+        //let telegramTest = document.querySelector("#telegramTest");
+        //telegramTest.innerText = JSON.stringify(window.Telegram.WebApp.initData, null, 4);
+
+        // Инициализация WebApp
+        Telegram.WebApp.ready();
+
+        // Конфигурация кнопки
+        const initMainButton = () => {
+            Telegram.WebApp.MainButton
+                .setText("Подтвердить")
+                .setParams({
+                    color: Telegram.WebApp.themeParams.button_color,
+                    text_color: Telegram.WebApp.themeParams.button_text_color
+                })
+                .onClick(handleMainButtonClick)
+                .enable()
+                .show();
+        };
+
+        // Обработчик клика
+        const handleMainButtonClick = () => {
+            Telegram.WebApp.MainButton
+                .hide();
+        };
+
+        // Инициализация при загрузке
+        initMainButton();
     }
     function checkTheme()
     {
