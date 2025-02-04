@@ -1,78 +1,96 @@
 window.BACKEND_URL = "http://localhost/";
 
-document.addEventListener("DOMContentLoaded",(event) => {
+document.addEventListener("DOMContentLoaded", (event) => {
     const html = document.querySelector("html");
     const mainButton = Telegram.WebApp.MainButton;
     const backButton = Telegram.WebApp.BackButton;
-    let currentStage = 0; // Текущий этап
-const totalStages = 9; // Общее количество этапов
+    let currentStage = 0;
+    const totalStages = 9;
 
-function changeStage(newStage) {
-    const prevStage = currentStage;
-    currentStage = newStage;
+    // Флаг для блокировки анимации
+    let isAnimating = false;
 
-    // Скрываем предыдущий этап
-    document.querySelector(`.stage_${prevStage}`).style.display = 'none';
-    // Показываем текущий этап
-    document.querySelector(`.stage_${currentStage}`).style.display = 'block';
-
-    // Управление кнопкой "Назад"
-    backButton[currentStage > 0 ? 'show' : 'hide']();
-
-    // Обновление основной кнопки
-    updateMainButton();
-}
-
-function updateMainButton() {
-
-    
-    if(currentStage === totalStages - 1) {
-        mainButton.setText("Завершить")
-            .onClick(() => {
-                //console.log("finish")//Telegram.WebApp.sendData(JSON.stringify({action: 'finish'}));
-            })
-            .show();
+    // Единый обработчик для MainButton
+    const handleMainButtonClick = () => {
+        if (currentStage === totalStages - 1) {
+            Telegram.WebApp.sendData(JSON.stringify({action: 'finish'}));
         } else {
-            mainButton.setText("Далее")
-                .onClick(() => changeStage(currentStage + 1))
-                .show();
+            changeStage(currentStage + 1);
+        }
+    };
+
+    function changeStage(newStage) {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        const prevStage = currentStage;
+        currentStage = Math.max(0, Math.min(newStage, totalStages - 1));
+
+        const prevElement = document.querySelector(`.stage_${prevStage}`);
+        const currentElement = document.querySelector(`.stage_${currentStage}`);
+
+        // Анимация перехода
+        prevElement.classList.add('fade-out');
+        currentElement.classList.add('fade-in');
+
+        setTimeout(() => {
+            prevElement.style.display = 'none';
+            prevElement.classList.remove('fade-out');
+            
+            currentElement.style.display = 'block';
+            currentElement.classList.remove('fade-in');
+            
+            updateUI();
+            isAnimating = false;
+        }, 300);
+    }
+
+    function updateUI() {
+        // Обновление BackButton
+        backButton[currentStage > 0 ? 'show' : 'hide']();
+
+        // Обновление MainButton
+        mainButton
+            .setText(currentStage === totalStages - 1 ? "Завершить" : "Далее")
+            .offClick(handleMainButtonClick) // Важно: удаляем предыдущий обработчик
+            .onClick(handleMainButtonClick);
+
+        if (currentStage === totalStages - 1) {
+            mainButton.setParams({color: '#32a852'});
+        } else {
+            mainButton.setParams({color: Telegram.WebApp.themeParams.button_color});
         }
     }
 
     function initTelegramWebApp() {
         Telegram.WebApp.ready();
         
-        // Инициализация кнопки "Назад"
         backButton
             .onClick(() => changeStage(currentStage - 1))
             .hide();
 
-        // Первоначальная настройка
-        changeStage(0); // Показываем первый этап
-        updateMainButton();
+        mainButton
+            .setParams({
+                color: Telegram.WebApp.themeParams.button_color,
+                text_color: Telegram.WebApp.themeParams.button_text_color
+            })
+            .show();
+
+        changeStage(0);
     }
 
-    
-    function checkTheme()
-    {
-        var theme_controllers = document.querySelectorAll(".theme-controller");
-        if(window.Telegram.WebApp.colorScheme == "light")
-        {
-            html.dataset.theme = "light";
-            theme_controllers.forEach((controller) => {
-                controller.value = "dark";
-            })
-            return;
-        }
-        html.dataset.theme = "dark";
-        theme_controllers.forEach((controller) => {
-            controller.value = "light";
-        })
+    function checkTheme() {
+        const theme = Telegram.WebApp.colorScheme === "light" ? "light" : "dark";
+        html.dataset.theme = theme;
+        document.querySelectorAll(".theme-controller").forEach(controller => {
+            controller.value = theme === "light" ? "dark" : "light";
+        });
     }
-    function init()
-    {
+
+    function init() {
         initTelegramWebApp();
         checkTheme();
     }
+
     init();
 });
