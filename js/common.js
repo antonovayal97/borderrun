@@ -2,9 +2,10 @@ window.BACKEND_URL = "http://localhost/";
 
 document.addEventListener("DOMContentLoaded",(event) => {
     const html = document.querySelector("html");
-    
+    const mainButton = Telegram.WebApp.MainButton;
+    const backButton = Telegram.WebApp.BackButton;
     let currentStage = 0; // Текущий этап
-const totalStages = 3; // Общее количество этапов
+const totalStages = 9; // Общее количество этапов
 
 function changeStage(newStage) {
     const prevStage = currentStage;
@@ -16,19 +17,19 @@ function changeStage(newStage) {
     document.querySelector(`.stage_${currentStage}`).style.display = 'block';
 
     // Управление кнопкой "Назад"
-    Telegram.WebApp.BackButton[currentStage > 0 ? 'show' : 'hide']();
+    backButton[currentStage > 0 ? 'show' : 'hide']();
 
     // Обновление основной кнопки
     updateMainButton();
 }
 
 function updateMainButton() {
-    const mainButton = Telegram.WebApp.MainButton;
+
     
     if(currentStage === totalStages - 1) {
         mainButton.setText("Завершить")
             .onClick(() => {
-                console.log("finish")//Telegram.WebApp.sendData(JSON.stringify({action: 'finish'}));
+                //console.log("finish")//Telegram.WebApp.sendData(JSON.stringify({action: 'finish'}));
             })
             .show();
         } else {
@@ -42,7 +43,7 @@ function updateMainButton() {
         Telegram.WebApp.ready();
         
         // Инициализация кнопки "Назад"
-        Telegram.WebApp.BackButton
+        backButton
             .onClick(() => changeStage(currentStage - 1))
             .hide();
 
