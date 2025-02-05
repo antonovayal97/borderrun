@@ -140,13 +140,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             noda.classList.add("active");
         }
         alert(activeCity);
-        if(activeCity == null)
-        {
-            mainButton
-            .disable()
-            .hide()
-        }
-        else
+        if(activeCity)
         {
             mainButton
             .enable()
