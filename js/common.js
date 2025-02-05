@@ -139,7 +139,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
             })
             noda.classList.add("active");
         }
-        alert(activeCity);
         if(activeCity)
         {
             mainButton
