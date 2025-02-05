@@ -7,6 +7,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
     let currentStage = 0;
     const totalStages = 9;
 
+    const buttonStages = [
+        "Начать",
+        "Продолжить",
+        "Выбрать",
+        "Выбрать",
+        "Выбрать",
+        "Выбрать",
+        "Оплатить",
+        "Продолжить",
+        "Новая заявка"
+    ];
     // Флаг для блокировки анимации
     let isAnimating = false;
 
@@ -49,9 +60,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
         // Обновление BackButton
         backButton[currentStage > 0 ? 'show' : 'hide']();
 
+        
         // Обновление MainButton
         mainButton
-            .setText(currentStage === totalStages - 1 ? "Завершить" : "Далее")
+            .setText(buttonStages[currentStage])
             .offClick(handleMainButtonClick) // Важно: удаляем предыдущий обработчик
             .onClick(handleMainButtonClick);
 
