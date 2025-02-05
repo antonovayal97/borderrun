@@ -139,17 +139,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
             })
             noda.classList.add("active");
         }
-        if(activeCity != null)
+        if(activeCity)
         {
             mainButton
             .disable()
-            .setParams({color: Telegram.WebApp.themeParams.bg_color})
-        }
-        else
-        {
-            mainButton
-            .enable()
-            .setParams({color: Telegram.WebApp.themeParams.button_color})
+            .hide()
         }
     }
 
@@ -167,7 +161,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
         {
             mainButton
             .disable()
-            .setParams({color: Telegram.WebApp.themeParams.bg_color})
+            .hide()
+        }
+        else
+        {
+            mainButton
+            .enable()
+            .show()
         }
         // Анимация перехода
         //prevElement.classList.add('fade-out');
