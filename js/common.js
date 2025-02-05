@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             })
             noda.classList.add("active");
         }
-        if(!activeCity)
+        if(activeCity != null)
         {
             mainButton
             .disable()
@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         const prevElement = document.querySelector(`.stage_${prevStage}`);
         const currentElement = document.querySelector(`.stage_${currentStage}`);
 
-        if(currentStage == 2)
+        if(currentStage == 2 && activeCity == null)
         {
             mainButton
             .disable()
