@@ -73,15 +73,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
         currentElement.classList.add('fade-in');
 
         setTimeout(() => {
-            prevElement.style.display = 'none';
-            prevElement.classList.remove('fade-out');
+            //prevElement.style.display = 'none';
+            //prevElement.classList.remove('fade-out');
             
-            currentElement.style.display = 'block';
-            currentElement.classList.remove('fade-in');
+            //currentElement.style.display = 'block';
+            //currentElement.classList.remove('fade-in');
             
             updateUI();
             isAnimating = false;
-        }, 300);
+        }, 100);
     }
 
     function updateUI() {
