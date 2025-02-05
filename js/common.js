@@ -68,6 +68,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
         const prevElement = document.querySelector(`.stage_${prevStage}`);
         const currentElement = document.querySelector(`.stage_${currentStage}`);
 
+        if(currentStage == 2)
+        {
+            mainButton
+            .disable()
+        }
         // Анимация перехода
         //prevElement.classList.add('fade-out');
         //currentElement.classList.add('fade-in');
