@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             })
             .show();
 
-        changeStage(2);
+        changeStage(0);
     }
 
     function checkTheme() {
