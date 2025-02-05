@@ -4,19 +4,47 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const html = document.querySelector("html");
     const mainButton = Telegram.WebApp.MainButton;
     const backButton = Telegram.WebApp.BackButton;
+    let headerTitle = document.querySelector(".header-title");
     let currentStage = 0;
     const totalStages = 9;
 
     const buttonStages = [
-        "Начать",
-        "Продолжить",
-        "Выбрать",
-        "Выбрать",
-        "Выбрать",
-        "Выбрать",
-        "Оплатить",
-        "Продолжить",
-        "Новая заявка"
+        {
+            title: "",
+            button: "Начать"
+        },
+        {
+            title: "Описание услуги",
+            button: "Продолжить"
+        },
+        {
+            title: "Выберите город",
+            button: "Выбрать"
+        },
+        {
+            title: "Срок штампа",
+            button: "Выбрать"
+        },
+        {
+            title: "Выберите дату бордера",
+            button: "Выбрать"
+        },
+        {
+            title: "Откуда будете выезжать",
+            button: "Выбрать"
+        },
+        {
+            title: "Оплата",
+            button: "Оплатить"
+        },
+        {
+            title: "",
+            button: "Продолжить"
+        },
+        {
+            title: "Мои бордеры",
+            button: "Новая заявка"
+        }
     ];
     // Флаг для блокировки анимации
     let isAnimating = false;
@@ -60,10 +88,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
         // Обновление BackButton
         backButton[currentStage > 0 ? 'show' : 'hide']();
 
-        
+        if(buttonStages[currentStage].title != "")
+        {
+            headerTitle.innerText = buttonStages[currentStage].title;
+        }
+        else
+        {
+            headerTitle.innerText = "";
+        }
         // Обновление MainButton
         mainButton
-            .setText(buttonStages[currentStage])
+            .setText(buttonStages[currentStage].button)
             .offClick(handleMainButtonClick) // Важно: удаляем предыдущий обработчик
             .onClick(handleMainButtonClick);
 
@@ -88,7 +123,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             })
             .show();
 
-        changeStage(0);
+        changeStage(2);
     }
 
     function checkTheme() {

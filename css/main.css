@@ -871,20 +871,15 @@ html {
     --tw-text-opacity: 1;
     color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
   }
-}
-.checkbox {
-  flex-shrink: 0;
-  --chkbg: var(--fallback-bc,oklch(var(--bc)/1));
-  --chkfg: var(--fallback-b1,oklch(var(--b1)/1));
-  height: 1.5rem;
-  width: 1.5rem;
-  cursor: pointer;
-  -webkit-appearance: none;
-          appearance: none;
-  border-radius: var(--rounded-btn, 0.5rem);
-  border-width: 1px;
-  border-color: var(--fallback-bc,oklch(var(--bc)/var(--tw-border-opacity)));
-  --tw-border-opacity: 0.2;
+
+  .menu li > *:not(ul, .menu-title, details, .btn):active,
+.menu li > *:not(ul, .menu-title, details, .btn).active,
+.menu li > details > summary:active {
+    --tw-bg-opacity: 1;
+    background-color: var(--fallback-n,oklch(var(--n)/var(--tw-bg-opacity)));
+    --tw-text-opacity: 1;
+    color: var(--fallback-nc,oklch(var(--nc)/var(--tw-text-opacity)));
+  }
 }
 .diff {
   position: relative;
@@ -1153,6 +1148,11 @@ html {
     0 0 0 2px var(--tglbg) inset,
     var(--togglehandleborder);
 }
+.btm-nav > *:where(.active) {
+  border-top-width: 2px;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+}
 .btm-nav > *.disabled,
     .btm-nav > *[disabled] {
   pointer-events: none;
@@ -1179,49 +1179,6 @@ html {
   100% {
     transform: scale(1);
   }
-}
-.checkbox:focus {
-  box-shadow: none;
-}
-.checkbox:focus-visible {
-  outline-style: solid;
-  outline-width: 2px;
-  outline-offset: 2px;
-  outline-color: var(--fallback-bc,oklch(var(--bc)/1));
-}
-.checkbox:disabled {
-  border-width: 0px;
-  cursor: not-allowed;
-  border-color: transparent;
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-bc,oklch(var(--bc)/var(--tw-bg-opacity)));
-  opacity: 0.2;
-}
-.checkbox:checked,
-  .checkbox[aria-checked="true"] {
-  background-repeat: no-repeat;
-  animation: checkmark var(--animation-input, 0.2s) ease-out;
-  background-color: var(--chkbg);
-  background-image: linear-gradient(-45deg, transparent 65%, var(--chkbg) 65.99%),
-      linear-gradient(45deg, transparent 75%, var(--chkbg) 75.99%),
-      linear-gradient(-45deg, var(--chkbg) 40%, transparent 40.99%),
-      linear-gradient(
-        45deg,
-        var(--chkbg) 30%,
-        var(--chkfg) 30.99%,
-        var(--chkfg) 40%,
-        transparent 40.99%
-      ),
-      linear-gradient(-45deg, var(--chkfg) 50%, var(--chkbg) 50.99%);
-}
-.checkbox:indeterminate {
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-bc,oklch(var(--bc)/var(--tw-bg-opacity)));
-  background-repeat: no-repeat;
-  animation: checkmark var(--animation-input, 0.2s) ease-out;
-  background-image: linear-gradient(90deg, transparent 80%, var(--chkbg) 80%),
-      linear-gradient(-90deg, transparent 80%, var(--chkbg) 80%),
-      linear-gradient(0deg, var(--chkbg) 43%, var(--chkfg) 43%, var(--chkfg) 57%, var(--chkbg) 57%);
 }
 @keyframes checkmark {
 
@@ -1320,6 +1277,14 @@ html {
   color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+.menu li > *:not(ul, .menu-title, details, .btn):active,
+.menu li > *:not(ul, .menu-title, details, .btn).active,
+.menu li > details > summary:active {
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-n,oklch(var(--n)/var(--tw-bg-opacity)));
+  --tw-text-opacity: 1;
+  color: var(--fallback-nc,oklch(var(--nc)/var(--tw-text-opacity)));
 }
 .mockup-phone .display {
   overflow: hidden;
@@ -1532,42 +1497,17 @@ html {
 .steps .step[data-content]:after {
   content: attr(data-content);
 }
-.swap-rotate .swap-on,
-.swap-rotate .swap-indeterminate,
-.swap-rotate input:indeterminate ~ .swap-on {
-  --tw-rotate: 45deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+.table tr.active,
+  .table tr.active:nth-child(even),
+  .table-zebra tbody tr:nth-child(even) {
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity)));
 }
-.swap-rotate input:checked ~ .swap-off,
-.swap-active:where(.swap-rotate) .swap-off,
-.swap-rotate input:indeterminate ~ .swap-off {
-  --tw-rotate: -45deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-.swap-rotate input:checked ~ .swap-on,
-.swap-active:where(.swap-rotate) .swap-on,
-.swap-rotate input:indeterminate ~ .swap-indeterminate {
-  --tw-rotate: 0deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-.swap-flip .swap-on,
-.swap-flip .swap-indeterminate,
-.swap-flip input:indeterminate ~ .swap-on {
-  transform: rotateY(180deg);
-  backface-visibility: hidden;
-  opacity: 1;
-}
-.swap-flip input:checked ~ .swap-off,
-.swap-active:where(.swap-flip) .swap-off,
-.swap-flip input:indeterminate ~ .swap-off {
-  transform: rotateY(-180deg);
-  backface-visibility: hidden;
-  opacity: 1;
-}
-.swap-flip input:checked ~ .swap-on,
-.swap-active:where(.swap-flip) .swap-on,
-.swap-flip input:indeterminate ~ .swap-indeterminate {
-  transform: rotateY(0deg);
+.table-zebra tr.active,
+    .table-zebra tr.active:nth-child(even),
+    .table-zebra-zebra tbody tr:nth-child(even) {
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-bg-opacity)));
 }
 .textarea:focus {
   box-shadow: none;
@@ -1678,6 +1618,18 @@ html {
   width: 1024px;
   height: 320px;
 }
+.btm-nav-xs > *:where(.active) {
+  border-top-width: 1px;
+}
+.btm-nav-sm > *:where(.active) {
+  border-top-width: 2px;
+}
+.btm-nav-md > *:where(.active) {
+  border-top-width: 2px;
+}
+.btm-nav-lg > *:where(.active) {
+  border-top-width: 4px;
+}
 .join.join-vertical {
   flex-direction: column;
 }
@@ -1784,20 +1736,8 @@ html {
 .static {
   position: static;
 }
-.fixed {
-  position: fixed;
-}
 .sticky {
   position: sticky;
-}
-.left-2 {
-  left: 0.5rem;
-}
-.top-2 {
-  top: 0.5rem;
-}
-.z-10 {
-  z-index: 10;
 }
 .mx-auto {
   margin-left: auto;
@@ -1807,21 +1747,44 @@ html {
   margin-top: 0px;
   margin-bottom: 0px;
 }
-.my-10 {
-  margin-top: 2.5rem;
-  margin-bottom: 2.5rem;
-}
 .mb-10 {
   margin-bottom: 2.5rem;
 }
+.mb-14 {
+  margin-bottom: 3.5rem;
+}
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+.ml-5 {
+  margin-left: 1.25rem;
+}
+.ml-auto {
+  margin-left: auto;
+}
+.mr-4 {
+  margin-right: 1rem;
+}
 .block {
   display: block;
+}
+.flex {
+  display: flex;
 }
 .grid {
   display: grid;
 }
 .hidden {
   display: none;
+}
+.h-16 {
+  height: 4rem;
+}
+.h-full {
+  height: 100%;
+}
+.w-28 {
+  width: 7rem;
 }
 .w-full {
   width: 100%;
@@ -1832,12 +1795,41 @@ html {
 .resize {
   resize: both;
 }
-.fill-current {
-  fill: currentColor;
+.flex-col {
+  flex-direction: column;
+}
+.items-center {
+  align-items: center;
+}
+.gap-4 {
+  gap: 1rem;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.rounded-2xl {
+  border-radius: 1rem;
+}
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+.bg-gray-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
+}
+.object-cover {
+  object-fit: cover;
+}
+.p-2 {
+  padding: 0.5rem;
 }
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
+}
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 .text-center {
   text-align: center;
@@ -1846,24 +1838,23 @@ html {
   font-size: 1.5rem;
   line-height: 2rem;
 }
-.text-base {
-  font-size: 1rem;
-  line-height: 1.5rem;
-}
-.text-sm {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-}
-.text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
-}
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
 }
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
 .font-bold {
   font-weight: 700;
+}
+.font-semibold {
+  font-weight: 600;
 }
 .italic {
   font-style: italic;
@@ -1936,4 +1927,8 @@ body {
 }
 .stage {
   display: none;
+}
+
+.city-card.active {
+  border: 2px solid var(--tg-theme-button-color, #0f0);
 }
