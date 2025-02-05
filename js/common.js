@@ -146,6 +146,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
             .disable()
             .hide()
         }
+        else
+        {
+            mainButton
+            .enable()
+            .show()
+        }
     }
 
     function changeStage(newStage) {
