@@ -5,10 +5,50 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const mainButton = Telegram.WebApp.MainButton;
     const backButton = Telegram.WebApp.BackButton;
     let headerTitle = document.querySelector(".header-title");
+    let citys = [
+        {
+            id: 1,
+            name: "Паттайя",
+            img: "https://www.fodors.com/wp-content/uploads/2024/03/0-HERO-Shutterstock-1111917086.jpg",
+            price: "от 2900 бат",
+            stamps: [
+                {
+                    id: 1,
+                    name: "30 дней",
+                    price: "2900 бат",
+                },
+                {
+                    id: 2,
+                    name: "60 дней",
+                    price: "3100 бат",
+                }
+            ]
+        },
+        {
+            id: 2,
+            name: "Бангкок",
+            img: "https://static.independent.co.uk/2025/01/03/14/newFile-12.jpg",
+            price: "от 2900 бат",
+            stamps: [
+                {
+                    id: 1,
+                    name: "30 дней",
+                    price: "2900 бат",
+                },
+                {
+                    id: 2,
+                    name: "60 дней",
+                    price: "3100 бат",
+                }
+            ]
+        }
+    ];
+    let activeCity = null;
+    let stamps = null;
     let currentStage = 0;
     const totalStages = 9;
 
-    const buttonStages = [
+    const stagesObjects = [
         {
             title: "",
             button: "Начать"
@@ -58,6 +98,61 @@ document.addEventListener("DOMContentLoaded", (event) => {
         }
     };
 
+    function initCitys()
+    {
+        let cityList = document.querySelector(".city-list");
+
+        citys.forEach((city) => {
+            // Создаем элемент div
+            let cityCard = document.createElement("div");
+            // Добавляем классы и HTML-содержимое
+            cityCard.dataset.id = city.id;
+            cityCard.className = "city-card flex items-center p-2 rounded-2xl bg-gray-100";
+            cityCard.innerHTML = `
+                <div class="w-28 h-16 rounded-lg overflow-hidden">
+                    <img class="w-full h-full object-cover" src="${city.img}" alt="${city.name}">
+                </div>
+                <div class="font-semibold text-xl ml-5">${city.name}</div>
+                <div class="font-semibold text-m ml-auto mr-4">${city.price}</div>
+            `;
+
+            cityCard.addEventListener("click",() => {
+                updateCity(cityCard)
+            })
+            // Добавляем созданный элемент в список
+            cityList.appendChild(cityCard);
+        });
+    }
+
+    function updateCity(noda)
+    {
+        if(activeCity == noda.dataset.id)
+        {
+            return
+        }
+        activeCity = (noda.dataset.id != undefined) ? noda.dataset.id : null;
+        if(activeCity)
+        {
+            let cards = document.querySelectorAll(".city-card");
+            cards.forEach((card) => {
+                card.classList.remove("active");
+            })
+            noda.classList.add("active");
+        }
+        if(!activeCity)
+        {
+            mainButton
+            .disable()
+            .setParams({color: Telegram.WebApp.themeParams.bg_color})
+        }
+        else
+        {
+            mainButton
+            .enable()
+            .setParams({color: Telegram.WebApp.themeParams.button_color})
+        }
+    }
+
     function changeStage(newStage) {
         if (isAnimating) return;
         isAnimating = true;
@@ -72,6 +167,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         {
             mainButton
             .disable()
+            .setParams({color: Telegram.WebApp.themeParams.bg_color})
         }
         // Анимация перехода
         //prevElement.classList.add('fade-out');
@@ -93,9 +189,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
         // Обновление BackButton
         backButton[currentStage > 0 ? 'show' : 'hide']();
 
-        if(buttonStages[currentStage].title != "")
+        if(stagesObjects[currentStage].title != "")
         {
-            headerTitle.innerText = buttonStages[currentStage].title;
+            headerTitle.innerText = stagesObjects[currentStage].title;
         }
         else
         {
@@ -103,7 +199,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         }
         // Обновление MainButton
         mainButton
-            .setText(buttonStages[currentStage].button)
+            .setText(stagesObjects[currentStage].button)
             .offClick(handleMainButtonClick) // Важно: удаляем предыдущий обработчик
             .onClick(handleMainButtonClick);
 
@@ -128,7 +224,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             })
             .show();
 
-        changeStage(0);
+        changeStage(2);
     }
 
     function checkTheme() {
@@ -141,7 +237,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     function init() {
         initTelegramWebApp();
-        checkTheme();
+        initCitys();
+        //checkTheme();
     }
 
     init();
