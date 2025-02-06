@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     function checkTheme() {
         const theme = Telegram.WebApp.colorScheme === "light" ? "light" : "dark";
         html.dataset.theme = theme;
-        html.dataset.theme = "dark";
+        //html.dataset.theme = "dark";
         document.querySelectorAll(".theme-controller").forEach(controller => {
             controller.value = theme === "light" ? "dark" : "light";
         });
