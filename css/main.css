@@ -766,72 +766,6 @@ html {
   --b3: 21.1484% 0.01165 254.087939;
   --bc: 74.6477% 0.0216 264.435964;
 }
-
-[data-theme=cupcake] {
-  color-scheme: light;
-  --in: 72.06% 0.191 231.6;
-  --su: 64.8% 0.150 160;
-  --wa: 84.71% 0.199 83.87;
-  --er: 71.76% 0.221 22.18;
-  --pc: 15.2344% 0.017892 200.026556;
-  --sc: 15.787% 0.020249 356.29965;
-  --ac: 15.8762% 0.029206 78.618794;
-  --nc: 84.7148% 0.013247 313.189598;
-  --inc: 0% 0 0;
-  --suc: 0% 0 0;
-  --wac: 0% 0 0;
-  --erc: 0% 0 0;
-  --rounded-box: 1rem;
-  --rounded-badge: 1.9rem;
-  --animation-btn: 0.25s;
-  --animation-input: .2s;
-  --btn-focus-scale: 0.95;
-  --border-btn: 1px;
-  --p: 76.172% 0.089459 200.026556;
-  --s: 78.9351% 0.101246 356.29965;
-  --a: 79.3811% 0.146032 78.618794;
-  --n: 23.5742% 0.066235 313.189598;
-  --b1: 97.7882% 0.00418 56.375637;
-  --b2: 93.9822% 0.007638 61.449292;
-  --b3: 91.5861% 0.006811 53.440502;
-  --bc: 23.5742% 0.066235 313.189598;
-  --rounded-btn: 1.9rem;
-  --tab-border: 2px;
-  --tab-radius: 0.7rem;
-}
-
-:root:has(input.theme-controller[value=cupcake]:checked) {
-  color-scheme: light;
-  --in: 72.06% 0.191 231.6;
-  --su: 64.8% 0.150 160;
-  --wa: 84.71% 0.199 83.87;
-  --er: 71.76% 0.221 22.18;
-  --pc: 15.2344% 0.017892 200.026556;
-  --sc: 15.787% 0.020249 356.29965;
-  --ac: 15.8762% 0.029206 78.618794;
-  --nc: 84.7148% 0.013247 313.189598;
-  --inc: 0% 0 0;
-  --suc: 0% 0 0;
-  --wac: 0% 0 0;
-  --erc: 0% 0 0;
-  --rounded-box: 1rem;
-  --rounded-badge: 1.9rem;
-  --animation-btn: 0.25s;
-  --animation-input: .2s;
-  --btn-focus-scale: 0.95;
-  --border-btn: 1px;
-  --p: 76.172% 0.089459 200.026556;
-  --s: 78.9351% 0.101246 356.29965;
-  --a: 79.3811% 0.146032 78.618794;
-  --n: 23.5742% 0.066235 313.189598;
-  --b1: 97.7882% 0.00418 56.375637;
-  --b2: 93.9822% 0.007638 61.449292;
-  --b3: 91.5861% 0.006811 53.440502;
-  --bc: 23.5742% 0.066235 313.189598;
-  --rounded-btn: 1.9rem;
-  --tab-border: 2px;
-  --tab-radius: 0.7rem;
-}
 .container {
   width: 100%;
 }
@@ -1887,9 +1821,9 @@ html {
 .rounded-lg {
   border-radius: 0.5rem;
 }
-.bg-gray-100 {
+.bg-base-200 {
   --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
+  background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity, 1)));
 }
 .object-cover {
   object-fit: cover;
@@ -1920,9 +1854,13 @@ html {
   font-size: 1rem;
   line-height: 1.5rem;
 }
-.text-xl {
-  font-size: 1.25rem;
+.text-lg {
+  font-size: 1.125rem;
   line-height: 1.75rem;
+}
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
 }
 .font-bold {
   font-weight: 700;

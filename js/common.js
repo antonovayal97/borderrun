@@ -107,13 +107,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
             let cityCard = document.createElement("div");
             // Добавляем классы и HTML-содержимое
             cityCard.dataset.id = city.id;
-            cityCard.className = "city-card flex items-center p-2 rounded-2xl bg-gray-100";
+            cityCard.className = "city-card flex items-center p-2 rounded-2xl bg-base-200";
             cityCard.innerHTML = `
                 <div class="w-28 h-16 rounded-lg overflow-hidden">
                     <img class="w-full h-full object-cover" src="${city.img}" alt="${city.name}">
                 </div>
-                <div class="font-semibold text-xl ml-5">${city.name}</div>
-                <div class="font-semibold text-m ml-auto mr-4">${city.price}</div>
+                <div class="font-semibold text-lg ml-5">${city.name}</div>
+                <div class="font-semibold text-xs ml-auto mr-4">${city.price}</div>
             `;
 
             cityCard.addEventListener("click",() => {
@@ -169,17 +169,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
             .enable()
             .show()
         }
-        // Анимация перехода
-        //prevElement.classList.add('fade-out');
-        //currentElement.classList.add('fade-in');
-
         setTimeout(() => {
             prevElement.style.display = 'none';
-            //prevElement.classList.remove('fade-out');
-            
             currentElement.style.display = 'block';
-            //currentElement.classList.remove('fade-in');
-            
             updateUI();
             isAnimating = false;
         }, 100);
@@ -224,12 +216,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
             })
             .show();
 
-        changeStage(0);
+        changeStage(2);
     }
 
     function checkTheme() {
         const theme = Telegram.WebApp.colorScheme === "light" ? "light" : "dark";
         html.dataset.theme = theme;
+        html.dataset.theme = "dark";
         document.querySelectorAll(".theme-controller").forEach(controller => {
             controller.value = theme === "light" ? "dark" : "light";
         });
@@ -238,7 +231,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     function init() {
         initTelegramWebApp();
         initCitys();
-        //checkTheme();
+        checkTheme();
     }
 
     init();
