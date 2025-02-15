@@ -273,7 +273,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
     function updateAddress(input)
     {
-        activeAddress = (input.value().length > 0) ? input.value() : null;
+        activeAddress = (input.value.length > 0) ? input.value : null;
         if(activeAddress)
         {
             mainButton
