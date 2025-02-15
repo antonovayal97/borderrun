@@ -201,7 +201,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
         if (isAnimating) return;
         isAnimating = true;
 
-        flatpickrInstance.close();
+        if(newStage != 0)
+        {
+            flatpickrInstance.close();  
+        }
+
         const prevStage = currentStage;
         currentStage = Math.max(0, Math.min(newStage, totalStages - 1));
 
@@ -308,9 +312,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         initTelegramWebApp();
         initCitys();
         checkTheme();
-        setTimeout(() => {
-            initDate();
-        }, 1000)
+        initDate();
     }
 
     init();
