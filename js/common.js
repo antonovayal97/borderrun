@@ -50,6 +50,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const totalStages = 9;
     let stageNum = 0;
 
+    let flatpickrInstance;
+
     const stagesObjects = [
         {
             title: "",
@@ -199,13 +201,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
         if (isAnimating) return;
         isAnimating = true;
 
+        flatpickrInstance.close();
         const prevStage = currentStage;
         currentStage = Math.max(0, Math.min(newStage, totalStages - 1));
 
         const prevElement = document.querySelector(`.stage_${prevStage}`);
         const currentElement = document.querySelector(`.stage_${currentStage}`);
 
-        if(currentStage == 2 && activeCity == null)
+        if(currentStage == 2 && activeCity == null || currentStage == 3 && activeStamp == null)
         {
             mainButton
             .disable()
@@ -234,7 +237,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         // Если текущее время больше 12:00, блокируем текущий день и следующий день
         const minDate = currentHour >= 12 ? new Date(now.setDate(now.getDate() + 2)) : new Date(now.setDate(now.getDate() + 1));
 
-        const flatpickrInstance = flatpickr(dateInput, {
+        flatpickrInstance = flatpickr(dateInput, {
             minDate: minDate,
             disableMobile: "true",
             altInput: true,
