@@ -6,6 +6,9 @@
     <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no">
     <title>title</title><script src="https://unpkg.com/htmx.org"></script>
 <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
@@ -37,8 +40,18 @@
       <div class="stage stage_2">
         <div class="city-list flex flex-col gap-4"></div>
       </div>
-      <div class="stage stage_3"></div>
-      <div class="stage stage_4"></div>
+      <div class="stage stage_3">
+        <div class="stamp-list flex gap-4">
+          <div class="stamp-card flex-1 flex flex-col items-center p-2 py-8 rounded-2xl bg-base-200">
+            <div class="font-semibold text-xl">
+              <div class="font-semibold text-base"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="stage stage_4">
+        <div class="date-pick"><input class="date-pick__element" type="text" placeholder="Выберите дату"></div>
+      </div>
       <div class="stage stage_5"></div>
       <div class="stage stage_6"></div>
       <div class="stage stage_7"></div>

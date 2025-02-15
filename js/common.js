@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 {
                     id: 1,
                     name: "30 дней",
-                    price: "2900 бат",
+                    price: "1111 бат",
                 },
                 {
                     id: 2,
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 {
                     id: 1,
                     name: "30 дней",
-                    price: "2900 бат",
+                    price: "2222 бат",
                 },
                 {
                     id: 2,
@@ -44,9 +44,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
         }
     ];
     let activeCity = null;
+    let activeStamp = null;
     let stamps = null;
     let currentStage = 0;
     const totalStages = 9;
+    let stageNum = 0;
 
     const stagesObjects = [
         {
@@ -66,7 +68,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             button: "Выбрать"
         },
         {
-            title: "Выберите дату бордера",
+            title: "Выберите дату поездки",
             button: "Выбрать"
         },
         {
@@ -97,7 +99,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
             changeStage(currentStage + 1);
         }
     };
-
+    document.addEventListener('keydown', (event) => {
+        // Проверяем, что нажат пробел И фокус не в поле ввода/текстовой области
+        if (event.code === 'Space' && !['INPUT', 'TEXTAREA'].includes(event.target.tagName)) {
+            event.preventDefault(); // Отменяем стандартное действие (опционально)
+            changeStage(stageNum);
+            stageNum++;
+        }
+    });
     function initCitys()
     {
         let cityList = document.querySelector(".city-list");
@@ -138,15 +147,54 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 card.classList.remove("active");
             })
             noda.classList.add("active");
-        }
-        if(activeCity)
-        {
+            initStamps(activeCity);
             mainButton
             .enable()
             .show()
         }
     }
 
+    function initStamps(cityId)
+    {
+        let stampList = document.querySelector(".stamp-list");
+        let stamps = citys[cityId - 1].stamps;
+        stampList.innerHTML = null;
+        stamps.forEach((stamp) => {
+            let stampCard = document.createElement("div");
+            stampCard.dataset.id = stamp.id;
+            stampCard.className = "stamp-card flex-1 flex flex-col items-center p-2 py-8 rounded-2xl bg-base-200";
+            stampCard.innerHTML = `
+                <div class="font-semibold text-xl">${stamp.name}</div>
+                <div class="font-semibold text-base">${stamp.price}</div>
+            `;
+
+            stampCard.addEventListener("click",() => {
+                updateStamp(stampCard)
+            })
+            // Добавляем созданный элемент в список
+            stampList.appendChild(stampCard);
+        })
+    }
+    function updateStamp(noda)
+    {
+        if(activeStamp == noda.dataset.id)
+        {
+            return
+        }
+        activeStamp = (noda.dataset.id != undefined) ? noda.dataset.id : null;
+        if(activeStamp)
+        {
+            let cards = document.querySelectorAll(".stamp-card");
+            cards.forEach((card) => {
+                card.classList.remove("active");
+            })
+            noda.classList.add("active");
+
+            mainButton
+            .enable()
+            .show()
+        }
+    }
     function changeStage(newStage) {
         if (isAnimating) return;
         isAnimating = true;
@@ -176,7 +224,31 @@ document.addEventListener("DOMContentLoaded", (event) => {
             isAnimating = false;
         }, 100);
     }
+    function initDate()
+    {
+        const dateInput = document.querySelector('.date-pick__element');
 
+        const now = new Date();
+        const currentHour = now.getHours();
+
+        // Если текущее время больше 12:00, блокируем текущий день и следующий день
+        const minDate = currentHour >= 12 ? new Date(now.setDate(now.getDate() + 2)) : new Date(now.setDate(now.getDate() + 1));
+
+        const flatpickrInstance = flatpickr(dateInput, {
+            minDate: minDate,
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "d.m.Y", // Формат даты: ДД.ММ.ГГГГ
+            locale: "ru", // Локализация на русский
+            onChange: function(selectedDates, dateStr) {
+              // Выводим выбранную дату
+              //selectedDateText.textContent = `Выбранная дата: ${dateStr}`;
+      
+              // Меняем текст кнопки
+              //dateButton.textContent = "Поменять дату";
+            }
+          });
+    }
     function updateUI() {
         // Обновление BackButton
         backButton[currentStage > 0 ? 'show' : 'hide']();
@@ -216,7 +288,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             })
             .show();
 
-        changeStage(2);
+        changeStage(stageNum);
     }
 
     function checkTheme() {
@@ -232,6 +304,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
         initTelegramWebApp();
         initCitys();
         checkTheme();
+        setTimeout(() => {
+            initDate();
+        }, 1000)
     }
 
     init();
