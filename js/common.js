@@ -236,6 +236,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
         const flatpickrInstance = flatpickr(dateInput, {
             minDate: minDate,
+            disableMobile: "true",
             altInput: true,
             altFormat: "F j, Y",
             dateFormat: "d.m.Y", // Формат даты: ДД.ММ.ГГГГ
