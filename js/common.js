@@ -150,6 +150,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             })
             noda.classList.add("active");
             initStamps(activeCity);
+            activeStamp = null
             mainButton
             .enable()
             .show()
