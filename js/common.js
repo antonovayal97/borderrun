@@ -45,7 +45,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ];
     let activeCity = null;
     let activeStamp = null;
-    let stamps = null;
+    let activeDate = null;
+    let activeAddress = null;
     let currentStage = 0;
     const totalStages = 9;
     let stageNum = 0;
@@ -204,7 +205,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
         if(newStage != 0)
         {
-            flatpickrInstance.close();  
+            //flatpickrInstance.close();  
         }
 
         const prevStage = currentStage;
@@ -213,7 +214,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
         const prevElement = document.querySelector(`.stage_${prevStage}`);
         const currentElement = document.querySelector(`.stage_${currentStage}`);
 
-        if(currentStage == 2 && activeCity == null || currentStage == 3 && activeStamp == null)
+        if
+        (
+            currentStage == 2 && activeCity == null || 
+            currentStage == 3 && activeStamp == null ||
+            currentStage == 4 && activeDate == null ||
+            currentStage == 5 && activeAddress == null
+        )
         {
             mainButton
             .disable()
@@ -250,13 +257,35 @@ document.addEventListener("DOMContentLoaded", (event) => {
             dateFormat: "d.m.Y", // Формат даты: ДД.ММ.ГГГГ
             locale: "ru", // Локализация на русский
             onChange: function(selectedDates, dateStr) {
-              // Выводим выбранную дату
-              //selectedDateText.textContent = `Выбранная дата: ${dateStr}`;
-      
-              // Меняем текст кнопки
-              //dateButton.textContent = "Поменять дату";
+                activeDate = dateStr;
+                mainButton
+                .enable()
+                .show()
             }
           });
+    }
+    function initAddress()
+    {
+        const input = document.querySelector(".address input");
+        input.addEventListener("input", () => {
+            updateAddress(input);
+        })
+    }
+    function updateAddress(input)
+    {
+        activeAddress = (input.value().length > 0) ? input.value() : null;
+        if(activeAddress)
+        {
+            mainButton
+            .enable()
+            .show()
+        }
+        else
+        {
+            mainButton
+            .disable()
+            .hide()
+        }
     }
     function updateUI() {
         // Обновление BackButton
@@ -314,6 +343,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         initCitys();
         checkTheme();
         initDate();
+        initAddress();
     }
 
     init();
