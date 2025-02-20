@@ -5,6 +5,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const mainButton = Telegram.WebApp.MainButton;
     const backButton = Telegram.WebApp.BackButton;
     let headerTitle = document.querySelector(".header-title");
+
+    var dataForSend = {
+        description: {
+            telegram_name: null,
+            telegram_id: null,
+            city: null,
+            stamp: null,
+            date: null,
+            place: null
+        },
+        order_code: null
+    };
+
+
     let citys = [
         {
             id: 1,
@@ -16,11 +30,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     id: 1,
                     name: "30 дней",
                     price: "1111 бат",
+                    order_code: "PATTAYA_30"
                 },
                 {
                     id: 2,
                     name: "60 дней",
                     price: "3100 бат",
+                    order_code: "PATTAYA_60"
                 }
             ]
         },
@@ -34,11 +50,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     id: 1,
                     name: "30 дней",
                     price: "2222 бат",
+                    order_code: "BANGKOK_30"
                 },
                 {
                     id: 2,
                     name: "60 дней",
                     price: "3100 бат",
+                    order_code: "BANGKOK_60"
                 }
             ]
         }
@@ -145,17 +163,28 @@ document.addEventListener("DOMContentLoaded", (event) => {
         activeCity = (noda.dataset.id != undefined) ? noda.dataset.id : null;
         if(activeCity)
         {
+            dataForSend.description.city = getCityNameById(activeCity);
+
             let cards = document.querySelectorAll(".city-card");
             cards.forEach((card) => {
                 card.classList.remove("active");
             })
             noda.classList.add("active");
             initStamps(activeCity);
-            activeStamp = null
+            activeStamp = null;
+
+            dataForSend.description.stamp = null;
+            dataForSend.order_code = null;
+
             mainButton
             .enable()
             .show()
         }
+    }
+
+    function getCityNameById(citys, id) {
+        const city = citys.find(city => city.id === id);
+        return city ? city.name : null;
     }
 
     function initStamps(cityId)
@@ -194,11 +223,26 @@ document.addEventListener("DOMContentLoaded", (event) => {
             })
             noda.classList.add("active");
 
+            dataForSend.description.stamp = getStampNameById(activeStamp);
+
+            dataForSend.order_code = getOrderCodeById(activeStamp);
+
             mainButton
             .enable()
             .show()
         }
     }
+
+    function getStampNameById(stamps, id) {
+        const stamp = stamps.find(stamp => stamp.id === id);
+        return stamp ? stamp.name : null;
+    }
+
+    function getOrderCodeById(stamps, id) {
+        const stamp = stamps.find(stamp => stamp.id === id);
+        return stamp ? stamp.order_code : null;
+    }
+
     function changeStage(newStage) {
         if (isAnimating) return;
         isAnimating = true;
@@ -232,27 +276,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
             .disable()
             .hide()
 
-            const data = {
-                description: {
-                    telegram_name: "telegram_name",
-                    telegram_id: "telegram_id",
-                    city: "city",
-                    stamp: "stamp",
-                    date: "date",
-                    place: "place"
-                },
-                order_code: "BANGKOK_60"
-            };
-
-
-
             // Отправляем POST-запрос
             fetch('https://24asia-service.ru/api/create_payment.php', {
                 method: 'POST', // Метод запроса
                 headers: {
                     'Content-Type': 'application/json' // Указываем, что отправляем JSON
                 },
-                body: JSON.stringify(data) // Преобразуем объект в JSON-строку
+                body: JSON.stringify(dataForSend) // Преобразуем объект в JSON-строку
             })
             .then(response => response.json()) // Получаем ответ от сервера как текст
             .then(result => {
@@ -324,6 +354,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             locale: "ru", // Локализация на русский
             onChange: function(selectedDates, dateStr) {
                 activeDate = dateStr;
+                dataForSend.description.date = activeDate;
                 mainButton
                 .enable()
                 .show()
@@ -352,6 +383,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
             .disable()
             .hide()
         }
+
+        dataForSend.description.place = activeAddress;
     }
     function updateUI() {
         // Обновление BackButton
@@ -392,6 +425,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
     function initTelegramWebApp() {
         Telegram.WebApp.ready();
         
+        const user = Telegram.WebApp.initDataUnsafe.user;
+
+        dataForSend.description.telegram_name = user.username;
+        dataForSend.description.telegram_id = user.id;
+
         backButton
             .onClick(() => changeStage(currentStage - 1))
             .hide();
