@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         order_code: null
     };
 
-
+    
     let citys = [
         {
             id: 1,
@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         activeCity = (noda.dataset.id != undefined) ? noda.dataset.id : null;
         if(activeCity)
         {
-            dataForSend.description.city = getCityNameById(activeCity);
+            dataForSend.description.city = getCityNameById(citys,activeCity);
 
             let cards = document.querySelectorAll(".city-card");
             cards.forEach((card) => {
@@ -202,13 +202,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
             `;
 
             stampCard.addEventListener("click",() => {
-                updateStamp(stampCard)
+                updateStamp(stampCard, stamp)
             })
             // Добавляем созданный элемент в список
             stampList.appendChild(stampCard);
         })
     }
-    function updateStamp(noda)
+    function updateStamp(noda, stamp)
     {
         if(activeStamp == noda.dataset.id)
         {
@@ -223,24 +223,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
             })
             noda.classList.add("active");
 
-            dataForSend.description.stamp = getStampNameById(activeStamp);
+            dataForSend.description.stamp = stamp.name;
 
-            dataForSend.order_code = getOrderCodeById(activeStamp);
+            dataForSend.order_code = stamp.order_code;
 
             mainButton
             .enable()
             .show()
         }
-    }
-
-    function getStampNameById(stamps, id) {
-        const stamp = stamps.find(stamp => stamp.id === id);
-        return stamp ? stamp.name : null;
-    }
-
-    function getOrderCodeById(stamps, id) {
-        const stamp = stamps.find(stamp => stamp.id === id);
-        return stamp ? stamp.order_code : null;
     }
 
     function changeStage(newStage) {
