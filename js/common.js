@@ -425,11 +425,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
     function initTelegramWebApp() {
         Telegram.WebApp.ready();
         
-        const user = Telegram.WebApp.initDataUnsafe.user;
+        const user = Telegram.WebApp.initDataUnsafe?.user;
 
-        dataForSend.description.telegram_name = user.username;
-        dataForSend.description.telegram_id = user.id;
-
+        if (user) {
+            dataForSend.description.telegram_name = user?.username || null;
+            dataForSend.description.telegram_id = user?.id || null;
+            document.querySelector("h1").innerText = "user_name: " + dataForSend.description.telegram_name + ", telegram_id: " + dataForSend.description.telegram_id
+        } else {
+            document.querySelector("h1").innerText = "User data is not available.";
+        }
         backButton
             .onClick(() => changeStage(currentStage - 1))
             .hide();
