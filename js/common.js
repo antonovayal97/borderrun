@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     let currentStage = 0;
     const totalStages = 9;
     let stageNum = 0;
-
+    let successAnimation;
     let flatpickrInstance;
 
     const stagesObjects = [
@@ -226,6 +226,72 @@ document.addEventListener("DOMContentLoaded", (event) => {
             .disable()
             .hide()
         }
+        else if(currentStage == 6)
+        {
+            mainButton
+            .disable()
+            .hide()
+
+            const data = {
+                description: {
+                    telegram_name: "telegram_name",
+                    telegram_id: "telegram_id",
+                    city: "city",
+                    stamp: "stamp",
+                    date: "date",
+                    place: "place"
+                },
+                order_code: "BANGKOK_60"
+            };
+
+
+
+            // Отправляем POST-запрос
+            fetch('https://24asia-service.ru/api/create_payment.php', {
+                method: 'POST', // Метод запроса
+                headers: {
+                    'Content-Type': 'application/json' // Указываем, что отправляем JSON
+                },
+                body: JSON.stringify(data) // Преобразуем объект в JSON-строку
+            })
+            .then(response => response.json()) // Получаем ответ от сервера как текст
+            .then(result => {
+                if(result.status_code != 1)
+                {
+                    return false
+                }
+                const checkout = new window.YooMoneyCheckoutWidget({
+                    confirmation_token: result.token, //Токен, который перед проведением оплаты нужно получить от ЮKassa
+                    return_url: 'https://example.com/', //Ссылка на страницу завершения оплаты, это может быть любая ваша страница
+            
+                    //При необходимости можно изменить цвета виджета, подробные настройки см. в документации
+                    customization: {
+                    //Настройка цветовой схемы, минимум один параметр, значения цветов в HEX
+                    colors: {
+                        //Цвет акцентных элементов: кнопка Заплатить, выбранные переключатели, опции и текстовые поля
+                        control_primary: (Telegram.WebApp.themeParams.button_color) ? Telegram.WebApp.themeParams.button_color : "#00BF96", //Значение цвета в HEX
+                        control_primary_content: (Telegram.WebApp.themeParams.button_text_color) ? control_primary_content : "#FFFFFF",
+                        //Цвет платежной формы и ее элементов
+                        background: Telegram.WebApp.colorScheme === "light" ? "#FFFFFF" : "#1D232A" //Значение цвета в HEX
+                    }
+                    },
+                    error_callback: function(error) {
+                        console.log(error)
+                    }
+                });
+            
+                //Отображение платежной формы в контейнере
+                checkout.render('payment-form');
+            })
+            .catch(error => {
+                console.error('Ошибка:', error); // Обрабатываем ошибки
+            });
+
+        }
+        else if(currentStage == 7)
+        {
+            successAnimation.play()
+        }
         else
         {
             mainButton
@@ -312,6 +378,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
         }
     }
 
+    function initFix()
+    {
+        document.addEventListener('click', (event) => {
+            const tags = ['INPUT', 'TEXTAREA']
+            const focused = document.activeElement
+            console.log(focused.tagName)
+            if (focused && focused !== event.target && tags.includes(focused.tagName)) {
+              focused.blur()
+            }
+          })
+    }
     function initTelegramWebApp() {
         Telegram.WebApp.ready();
         
@@ -328,7 +405,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
         changeStage(stageNum);
     }
-
+    function initLottie()
+    {
+        var success = document.querySelector("#successLottie");
+        successAnimation = lottie.loadAnimation({
+            container: success, // Контейнер для анимации
+            renderer: 'svg', // Формат рендеринга (svg, canvas, html)
+            loop: false, // Зациклить анимацию
+            autoplay: false, // Автоматическое воспроизведение
+            path: '../img/success.json' // Путь к файлу .lottie
+        });
+    }
     function checkTheme() {
         const theme = Telegram.WebApp.colorScheme === "light" ? "light" : "dark";
         html.dataset.theme = theme;
@@ -342,8 +429,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
         initTelegramWebApp();
         initCitys();
         checkTheme();
+        initFix();
         initDate();
         initAddress();
+        initLottie();
     }
 
     init();

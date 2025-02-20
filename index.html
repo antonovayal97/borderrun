@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.1/lottie.min.js"></script>
+<script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
@@ -57,8 +59,16 @@
           <input class="input bg-base-200 w-full" type="text" placeholder="Введите адрес отеля, кондо или виллы">
         </div>
       </div>
-      <div class="stage stage_6"></div>
-      <div class="stage stage_7"></div>
+      <div class="stage stage_6">
+        <div id="payment-form"></div>
+      </div>
+      <div class="stage stage_7">
+        <div class="success text-center">
+          <div class="success__image w-80 h-80 m-auto" id="successLottie"></div>
+          <div class="text-4xl mb-4">Спасибо</div>
+          <div class="text-2xl">Ваше бронирование принято</div>
+        </div>
+      </div>
       <div class="stage stage_8"></div>
     </main>
     <footer></footer>

@@ -1,0 +1,13 @@
+# Игнорировать специфичные файлы
+404.php
+500.html
+.access.php
+.htaccess
+index.php
+.section.php
+urlrewrite.php
+
+# Игнорировать директории
+/bitrix/
+/include/
+/upload/
