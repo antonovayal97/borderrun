@@ -270,7 +270,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     colors: {
                         //Цвет акцентных элементов: кнопка Заплатить, выбранные переключатели, опции и текстовые поля
                         control_primary: (Telegram.WebApp.themeParams.button_color) ? Telegram.WebApp.themeParams.button_color : "#00BF96", //Значение цвета в HEX
-                        control_primary_content: (Telegram.WebApp.themeParams.button_text_color) ? control_primary_content : "#FFFFFF",
+                        control_primary_content: (Telegram.WebApp.themeParams.button_text_color) ? Telegram.WebApp.themeParams.button_text_color : "#FFFFFF",
                         //Цвет платежной формы и ее элементов
                         background: Telegram.WebApp.colorScheme === "light" ? "#FFFFFF" : "#1D232A" //Значение цвета в HEX
                     }
