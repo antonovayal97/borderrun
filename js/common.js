@@ -147,14 +147,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
             `;
 
             cityCard.addEventListener("click",() => {
-                updateCity(cityCard)
+                updateCity(cityCard,city)
             })
             // Добавляем созданный элемент в список
             cityList.appendChild(cityCard);
         });
     }
 
-    function updateCity(noda)
+    function updateCity(noda,city)
     {
         if(activeCity == noda.dataset.id)
         {
@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         activeCity = (noda.dataset.id != undefined) ? noda.dataset.id : null;
         if(activeCity)
         {
-            dataForSend.description.city = getCityNameById(citys,activeCity);
+            dataForSend.description.city = city.name;
 
             let cards = document.querySelectorAll(".city-card");
             cards.forEach((card) => {
@@ -180,11 +180,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
             .enable()
             .show()
         }
-    }
-
-    function getCityNameById(citys, id) {
-        const city = citys.find(city => city.id === id);
-        return city ? city.name : null;
     }
 
     function initStamps(cityId)
