@@ -1769,6 +1769,9 @@ html {
 .mb-14 {
   margin-bottom: 3.5rem;
 }
+.mb-4 {
+  margin-bottom: 1rem;
+}
 .mb-6 {
   margin-bottom: 1.5rem;
 }
@@ -1780,9 +1783,6 @@ html {
 }
 .mr-4 {
   margin-right: 1rem;
-}
-.mb-4 {
-  margin-bottom: 1rem;
 }
 .block {
   display: block;
@@ -1799,23 +1799,20 @@ html {
 .h-16 {
   height: 4rem;
 }
-.h-full {
-  height: 100%;
-}
 .h-80 {
   height: 20rem;
+}
+.h-full {
+  height: 100%;
 }
 .w-28 {
   width: 7rem;
 }
-.w-full {
-  width: 100%;
-}
-.w-16 {
-  width: 4rem;
-}
 .w-80 {
   width: 20rem;
+}
+.w-full {
+  width: 100%;
 }
 .flex-1 {
   flex: 1 1 0%;

@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
         },
         order_code: null
     };
-
     
     let citys = [
         {
@@ -61,6 +60,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             ]
         }
     ];
+
     let activeCity = null;
     let activeStamp = null;
     let activeDate = null;
@@ -124,8 +124,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
         // Проверяем, что нажат пробел И фокус не в поле ввода/текстовой области
         if (event.code === 'Space' && !['INPUT', 'TEXTAREA'].includes(event.target.tagName)) {
             event.preventDefault(); // Отменяем стандартное действие (опционально)
-            changeStage(stageNum);
             stageNum++;
+            changeStage(stageNum);
+        }
+
+        if (event.altKey && !['INPUT', 'TEXTAREA'].includes(event.target.tagName)) {
+            event.preventDefault(); // Отменяем стандартное действие (опционально)
+            if(stageNum != 0 )
+            {
+                stageNum--;
+            }
+            changeStage(stageNum);
+            
         }
     });
     function initCitys()
@@ -261,47 +271,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             .disable()
             .hide()
 
-            // Отправляем POST-запрос
-            fetch('https://24asia-service.ru/api/create_payment.php', {
-                method: 'POST', // Метод запроса
-                headers: {
-                    'Content-Type': 'application/json' // Указываем, что отправляем JSON
-                },
-                body: JSON.stringify(dataForSend) // Преобразуем объект в JSON-строку
-            })
-            .then(response => response.json()) // Получаем ответ от сервера как текст
-            .then(result => {
-                if(result.status_code != 1)
-                {
-                    return false
-                }
-                const checkout = new window.YooMoneyCheckoutWidget({
-                    confirmation_token: result.token, //Токен, который перед проведением оплаты нужно получить от ЮKassa
-                    return_url: 'https://example.com/', //Ссылка на страницу завершения оплаты, это может быть любая ваша страница
-            
-                    //При необходимости можно изменить цвета виджета, подробные настройки см. в документации
-                    customization: {
-                    //Настройка цветовой схемы, минимум один параметр, значения цветов в HEX
-                    colors: {
-                        //Цвет акцентных элементов: кнопка Заплатить, выбранные переключатели, опции и текстовые поля
-                        control_primary: (Telegram.WebApp.themeParams.button_color) ? Telegram.WebApp.themeParams.button_color : "#00BF96", //Значение цвета в HEX
-                        control_primary_content: (Telegram.WebApp.themeParams.button_text_color) ? Telegram.WebApp.themeParams.button_text_color : "#FFFFFF",
-                        //Цвет платежной формы и ее элементов
-                        background: Telegram.WebApp.colorScheme === "light" ? "#FFFFFF" : "#1D232A" //Значение цвета в HEX
-                    }
-                    },
-                    error_callback: function(error) {
-                        console.log(error)
-                    }
-                });
-            
-                //Отображение платежной формы в контейнере
-                checkout.render('payment-form');
-            })
-            .catch(error => {
-                console.error('Ошибка:', error); // Обрабатываем ошибки
-            });
-
+            initPayments();
         }
         else if(currentStage == 7)
         {
@@ -320,6 +290,53 @@ document.addEventListener("DOMContentLoaded", (event) => {
             isAnimating = false;
         }, 100);
     }
+
+
+    function initPayments()
+    {
+        document.querySelector("#payment-form").innerHTML = "";
+        // Отправляем POST-запрос
+        fetch('https://24asia-service.ru/api/create_payment.php', {
+            method: 'POST', // Метод запроса
+            headers: {
+                'Content-Type': 'application/json' // Указываем, что отправляем JSON
+            },
+            body: JSON.stringify(dataForSend) // Преобразуем объект в JSON-строку
+        })
+        .then(response => response.json()) // Получаем ответ от сервера как текст
+        .then(result => {
+            if(result.status_code != 1)
+            {
+                return false
+            }
+            const checkout = new window.YooMoneyCheckoutWidget({
+                confirmation_token: result.token, //Токен, который перед проведением оплаты нужно получить от ЮKassa
+                return_url: 'https://example.com/', //Ссылка на страницу завершения оплаты, это может быть любая ваша страница
+
+                //При необходимости можно изменить цвета виджета, подробные настройки см. в документации
+                customization: {
+                //Настройка цветовой схемы, минимум один параметр, значения цветов в HEX
+                colors: {
+                    //Цвет акцентных элементов: кнопка Заплатить, выбранные переключатели, опции и текстовые поля
+                    control_primary: (Telegram.WebApp.themeParams.button_color) ? Telegram.WebApp.themeParams.button_color : "#00BF96", //Значение цвета в HEX
+                    control_primary_content: (Telegram.WebApp.themeParams.button_text_color) ? Telegram.WebApp.themeParams.button_text_color : "#FFFFFF",
+                    //Цвет платежной формы и ее элементов
+                    background: Telegram.WebApp.colorScheme === "light" ? "#FFFFFF" : "#1D232A" //Значение цвета в HEX
+                }
+                },
+                error_callback: function(error) {
+                    console.log(error)
+                }
+            });
+
+            //Отображение платежной формы в контейнере
+            checkout.render('payment-form');
+        })
+        .catch(error => {
+            console.error('Ошибка:', error); // Обрабатываем ошибки
+        });
+    }
+
     function initDate()
     {
         const dateInput = document.querySelector('.date-pick__element');
