@@ -303,7 +303,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             }
             const checkout = new window.YooMoneyCheckoutWidget({
                 confirmation_token: result.token, //Токен, который перед проведением оплаты нужно получить от ЮKassa
-                return_url: 'https://example.com/', //Ссылка на страницу завершения оплаты, это может быть любая ваша страница
+                return_url: 'https://24asia-service.ru/success_page/', //Ссылка на страницу завершения оплаты, это может быть любая ваша страница
 
                 //При необходимости можно изменить цвета виджета, подробные настройки см. в документации
                 customization: {
