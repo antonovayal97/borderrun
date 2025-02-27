@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     let activeDate = null;
     let activeAddress = null;
     let currentStage = 0;
-    const totalStages = 9;
+    const totalStages = 7;
     let stageNum = 0;
     let successAnimation;
     let flatpickrInstance;
@@ -99,14 +99,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
         {
             title: "Оплата",
             button: "Оплатить"
-        },
-        {
-            title: "",
-            button: "Продолжить"
-        },
-        {
-            title: "Мои бордеры",
-            button: "Новая заявка"
         }
     ];
     // Флаг для блокировки анимации
