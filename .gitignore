@@ -11,7 +11,3 @@ urlrewrite.php
 /bitrix/
 /include/
 /upload/
-
-header.php
-footer.php
-description.php
