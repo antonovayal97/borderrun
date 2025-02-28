@@ -11,7 +11,7 @@
         <!--<script src="https://unpkg.com/htmx.org"></script>-->
         <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
         <?
-        if($APPLICATION->GetCurDir() == "/"):
+        if($APPLICATION->GetCurDir() == "/app/"):
         ?>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>
