@@ -1,6 +1,6 @@
 window.BACKEND_URL = "http://localhost/";
 
-document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener("DOMContentLoaded", async (event) => {
     const html = document.querySelector("html");
     const mainButton = Telegram.WebApp.MainButton;
     const backButton = Telegram.WebApp.BackButton;
@@ -11,64 +11,49 @@ document.addEventListener("DOMContentLoaded", (event) => {
             telegram_name: null,
             telegram_id: null,
             city: null,
-            stamp: null,
             date: null,
             place: null
         },
         order_code: null
     };
     
-    let citys = [
-        {
-            id: 1,
-            name: "Паттайя",
-            img: "https://www.fodors.com/wp-content/uploads/2024/03/0-HERO-Shutterstock-1111917086.jpg",
-            price: "от 2900 бат",
-            stamps: [
-                {
-                    id: 1,
-                    name: "30 дней",
-                    price: "1111 бат",
-                    order_code: "PATTAYA_30"
-                },
-                {
-                    id: 2,
-                    name: "60 дней",
-                    price: "3100 бат",
-                    order_code: "PATTAYA_60"
-                }
-            ]
-        },
-        {
-            id: 2,
-            name: "Бангкок",
-            img: "https://static.independent.co.uk/2025/01/03/14/newFile-12.jpg",
-            price: "от 2900 бат",
-            stamps: [
-                {
-                    id: 1,
-                    name: "30 дней",
-                    price: "2222 бат",
-                    order_code: "BANGKOK_30"
-                },
-                {
-                    id: 2,
-                    name: "60 дней",
-                    price: "3100 бат",
-                    order_code: "BANGKOK_60"
-                }
-            ]
+    async function getCities() {
+        try {
+            const response = await fetch('https://24asia-service.ru/api/get_cities.php');
+            const data = await response.json();
+            
+            if(data.status === 'success') {
+                // Преобразование данных для использования в приложении
+                const cities = data.data.map(city => ({
+                    id: city.id,
+                    name: city.name,
+                    img: city.img,
+                    price: `${city.price} бат`,
+                    description: city.description
+                }));
+                
+                console.log('Обновленные данные:', cities);
+                return cities;
+            }
+        } catch(error) {
+            console.error('Ошибка при загрузке данных:', error);
+            return [];
         }
-    ];
+    }
+    let citys;
+    // Использование
+    await getCities().then(cities => {
+        // Ваша логика работы с данными
+        citys = cities; // Обновленный массив
+        console.log(citys)
+    });
 
     let activeCity = null;
-    let activeStamp = null;
     let activeDate = null;
     let activeAddress = null;
     let currentStage = 0;
     const totalStages = 7;
     let stageNum = 0;
-    let successAnimation;
     let flatpickrInstance;
 
     const stagesObjects = [
@@ -85,8 +70,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
             button: "Выбрать"
         },
         {
-            title: "Срок штампа",
-            button: "Выбрать"
+            title: "Описание",
+            button: "Продолжить"
         },
         {
             title: "Выберите дату поездки",
@@ -165,6 +150,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
         activeCity = (noda.dataset.id != undefined) ? noda.dataset.id : null;
         if(activeCity)
         {
+            var description = document.querySelector(".city_description");
+
+
             dataForSend.description.city = city.name;
 
             let cards = document.querySelectorAll(".city-card");
@@ -172,63 +160,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 card.classList.remove("active");
             })
             noda.classList.add("active");
-            initStamps(activeCity);
-            activeStamp = null;
 
-            dataForSend.description.stamp = null;
-            dataForSend.order_code = null;
+            dataForSend.order_code = activeCity;
 
-            mainButton
-            .enable()
-            .show()
-        }
-    }
-
-    function initStamps(cityId)
-    {
-        let stampList = document.querySelector(".stamp-list");
-        let stamps = citys[cityId - 1].stamps;
-        stampList.innerHTML = null;
-        stamps.forEach((stamp) => {
-            let stampCard = document.createElement("div");
-            stampCard.dataset.id = stamp.id;
-            stampCard.className = "stamp-card flex-1 flex flex-col items-center p-2 py-8 rounded-2xl bg-base-200";
-            stampCard.innerHTML = `
-                <div class="font-semibold text-xl">${stamp.name}</div>
-                <div class="font-semibold text-base">${stamp.price}</div>
-            `;
-
-            stampCard.addEventListener("click",() => {
-                updateStamp(stampCard, stamp)
-            })
-            // Добавляем созданный элемент в список
-            stampList.appendChild(stampCard);
-        })
-    }
-    function updateStamp(noda, stamp)
-    {
-        if(activeStamp == noda.dataset.id)
-        {
-            return
-        }
-        activeStamp = (noda.dataset.id != undefined) ? noda.dataset.id : null;
-        if(activeStamp)
-        {
-            let cards = document.querySelectorAll(".stamp-card");
-            cards.forEach((card) => {
-                card.classList.remove("active");
-            })
-            noda.classList.add("active");
-
-            dataForSend.description.stamp = stamp.name;
-
-            dataForSend.order_code = stamp.order_code;
+            description.innerHTML = citys.find(city => city.id == activeCity).description;
 
             mainButton
             .enable()
             .show()
         }
     }
+
 
     function changeStage(newStage) {
         if (isAnimating) return;
@@ -236,7 +178,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
         if(newStage != 0)
         {
-            //flatpickrInstance.close();  
+            flatpickrInstance.close();  
         }
 
         const prevStage = currentStage;
@@ -248,7 +190,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
         if
         (
             currentStage == 2 && activeCity == null || 
-            currentStage == 3 && activeStamp == null ||
             currentStage == 4 && activeDate == null ||
             currentStage == 5 && activeAddress == null
         )
@@ -264,10 +205,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
             .hide()
 
             initPayments();
-        }
-        else if(currentStage == 7)
-        {
-            successAnimation.play()
         }
         else
         {
@@ -441,17 +378,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
         changeStage(stageNum);
     }
-    function initLottie()
-    {
-        var success = document.querySelector("#successLottie");
-        successAnimation = lottie.loadAnimation({
-            container: success, // Контейнер для анимации
-            renderer: 'svg', // Формат рендеринга (svg, canvas, html)
-            loop: false, // Зациклить анимацию
-            autoplay: false, // Автоматическое воспроизведение
-            path: '../img/success.json' // Путь к файлу .lottie
-        });
-    }
     function checkTheme() {
         const theme = Telegram.WebApp.colorScheme === "light" ? "light" : "dark";
         html.dataset.theme = theme;
@@ -468,7 +394,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
         initFix();
         initDate();
         initAddress();
-        initLottie();
     }
 
     init();
