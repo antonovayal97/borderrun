@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             let cityCard = document.createElement("div");
             // Добавляем классы и HTML-содержимое
             cityCard.dataset.id = city.id;
-            cityCard.className = "city-card flex items-center p-2 rounded-2xl bg-base-200";
+            cityCard.className = "city-card flex items-center p-2 rounded-2xl bg-base-200 cursor-pointer";
             cityCard.innerHTML = `
                 <div class="w-28 h-16 rounded-lg overflow-hidden">
                     <img class="w-full h-full object-cover" src="${city.img}" alt="${city.name}">
@@ -245,13 +245,13 @@ document.addEventListener("DOMContentLoaded", async (event) => {
                 //При необходимости можно изменить цвета виджета, подробные настройки см. в документации
                 customization: {
                 //Настройка цветовой схемы, минимум один параметр, значения цветов в HEX
-                colors: {
-                    //Цвет акцентных элементов: кнопка Заплатить, выбранные переключатели, опции и текстовые поля
-                    control_primary: (Telegram.WebApp.themeParams.button_color) ? Telegram.WebApp.themeParams.button_color : "#00BF96", //Значение цвета в HEX
-                    control_primary_content: (Telegram.WebApp.themeParams.button_text_color) ? Telegram.WebApp.themeParams.button_text_color : "#FFFFFF",
-                    //Цвет платежной формы и ее элементов
-                    background: Telegram.WebApp.colorScheme === "light" ? "#FFFFFF" : "#1D232A" //Значение цвета в HEX
-                }
+                    colors: {
+                        //Цвет акцентных элементов: кнопка Заплатить, выбранные переключатели, опции и текстовые поля
+                        control_primary: (Telegram.WebApp.themeParams.button_color) ? Telegram.WebApp.themeParams.button_color : "#00BF96", //Значение цвета в HEX
+                        control_primary_content: (Telegram.WebApp.themeParams.button_text_color) ? Telegram.WebApp.themeParams.button_text_color : "#FFFFFF",
+                        //Цвет платежной формы и ее элементов
+                        background: Telegram.WebApp.colorScheme === "light" ? "#FFFFFF" : "#1D232A" //Значение цвета в HEX
+                    }
                 },
                 error_callback: function(error) {
                     console.log(error)
