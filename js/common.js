@@ -397,7 +397,18 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             controller.value = theme === "light" ? "dark" : "light";
         });
     }
-
+    function initChat()
+    {
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/67d0a1e2d19d93190e0b6020/1im3fgncr';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+        })();
+    }
     function init() {
         initTelegramWebApp();
         initCitys();
@@ -405,6 +416,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         initFix();
         initDate();
         initAddress();
+        initChat();
     }
 
     init();
