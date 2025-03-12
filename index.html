@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no">
-    <title>title</title><script src="https://unpkg.com/htmx.org"></script>
-<script src="https://telegram.org/js/telegram-web-app.js?56"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
-<script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+    <title>title</title>
+    <script src="https://unpkg.com/htmx.org"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
+    <script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js"></script>
+    <script src="https://unpkg.com/imask"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/main.css?asdqwe">
   </head>
   <body class="text-base">
@@ -50,9 +52,21 @@
         <div class="date-pick"><input class="date-pick__element bg-base-200" type="text" placeholder="Выберите дату"></div>
       </div>
       <div class="stage stage_5">
-        <div class="address pr-4">
-          <div class="mb-2"><span>Адрес отеля, кондо или виллы на английском языке</span></div>
-          <input class="input bg-base-200 w-full" type="text" placeholder="Введите адрес">
+        <div class="address">
+          <div class="mb-4">
+            <div class="mb-2"><span>Адрес отеля, кондо или виллы на английском языке</span></div>
+            <input class="input bg-base-200 w-full addressInput" type="text" placeholder="Введите адрес">
+          </div>
+          <div>
+            <fieldset class="fieldset p-4 bg-base-100 border border-base-300 rounded-box">
+              <legend class="fieldset-legend">Способ связи (для водителя)</legend>
+              <div class="mb-2"><span>Whatsapp или таиский номер телефона</span></div>
+              <input class="input bg-base-200 w-full mb-2 phoneInput" placeholder="Введите номер телефона" type="tel">
+              <label class="fieldset-label">
+                <input class="isWhatsapp checkbox" type="checkbox" checked="checked">Связаться со мной по Whatsapp
+              </label>
+            </fieldset>
+          </div>
         </div>
       </div>
       <div class="stage stage_6">

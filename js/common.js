@@ -2,9 +2,16 @@ window.BACKEND_URL = "http://localhost/";
 
 document.addEventListener("DOMContentLoaded", async (event) => {
     const html = document.querySelector("html");
+
     const mainButton = Telegram.WebApp.MainButton;
     const backButton = Telegram.WebApp.BackButton;
+
     let headerTitle = document.querySelector(".header-title");
+
+    const addressInput = document.querySelector(".addressInput");
+    const phoneInput = document.querySelector(".phoneInput");
+    var isWhatsapp = document.querySelector(".isWhatsapp");
+
 
     var dataForSend = {
         description: {
@@ -12,7 +19,9 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             telegram_id: null,
             city: null,
             date: null,
-            place: null
+            place: null,
+            phone: null,
+            isWhatsapp: null
         },
         order_code: null
     };
@@ -178,7 +187,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 
         if(newStage != 0)
         {
-            flatpickrInstance.close();  
+            //flatpickrInstance.close();  
         }
 
         const prevStage = currentStage;
@@ -294,8 +303,8 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     }
     function initAddress()
     {
-        const input = document.querySelector(".address input");
-        input.addEventListener("input", function() {
+
+        addressInput.addEventListener("input", function() {
             // Сохраняем позицию курсора
             const start = this.selectionStart;
             const end = this.selectionEnd;
@@ -309,17 +318,52 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             const newEnd = Math.min(end, newLength);
             this.setSelectionRange(newStart, newEnd);
             
-            updateAddress(this);
+            updateAddress();
+        });
+
+        phoneInput.addEventListener("input", function() {
+            updateAddress();
+        });
+
+        isWhatsapp.addEventListener("input", function() {
+            updateAddress();
+        });
+
+        var inputPhoneMask = IMask(phoneInput, {
+            mask: [ {
+                mask: "+000-0000-0000",
+                startsWith: "66",
+                lazy: false,
+                country: "Таиланд",
+            }, {
+                mask: "+0 (000) 000-00-00",
+                startsWith: "7",
+                lazy: false,
+                country: "Russia",
+            }, {
+                mask: "0000000000000",
+                startsWith: "",
+                country: "Страна не определена",
+            }, ],
+            dispatch: (appended, dynamicMasked) => {
+                const number = (dynamicMasked.value + appended).replace(/\D/g, "");
+                return dynamicMasked.compiledMasks.find( (m) => number.indexOf(m.startsWith) === 0);
+            }
         });
     }
-    function updateAddress(input)
+
+
+    function updateAddress()
     {
-        activeAddress = (input.value.length > 0) ? input.value : null;
-        if(activeAddress)
+        activeAddress = (addressInput.value.length > 0) ? addressInput.value : null;
+
+        if(activeAddress && phoneInput.value.length > 7)
         {
             mainButton
             .enable()
             .show()
+
+            console.log("Адрес и номер телефона")
         }
         else
         {
@@ -329,6 +373,10 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         }
 
         dataForSend.description.place = activeAddress;
+        dataForSend.description.phone = phoneInput.value;
+        dataForSend.description.isWhatsapp = isWhatsapp.value;
+
+        console.log("dataForSend", dataForSend);
     }
     function updateUI() {
         // Обновление BackButton
@@ -388,6 +436,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             .show();
 
         changeStage(stageNum);
+        //changeStage(5);
     }
     function checkTheme() {
         const theme = Telegram.WebApp.colorScheme === "light" ? "light" : "dark";
