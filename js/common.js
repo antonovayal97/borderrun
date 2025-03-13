@@ -461,7 +461,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     function init() {
         initTelegramWebApp();
         initCitys();
-        checkTheme();
+        //checkTheme();
         initFix();
         initDate();
         initAddress();
