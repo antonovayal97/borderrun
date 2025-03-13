@@ -21,7 +21,8 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             date: null,
             place: null,
             phone: null,
-            isWhatsapp: null
+            isWhatsapp: null,
+            count: 1
         },
         order_code: null
     };
@@ -87,8 +88,8 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             button: "Выбрать"
         },
         {
-            title: "Откуда будете выезжать",
-            button: "Выбрать"
+            title: "Информация для поездки",
+            button: "Продолжить"
         },
         {
             title: "Оплата",
@@ -233,6 +234,10 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     function initPayments()
     {
         document.querySelector("#payment-form").innerHTML = "";
+
+        dataForSend.description.count = document.querySelector(".ticketCount").value;
+
+
         // Отправляем POST-запрос
         fetch('https://24asia-service.ru/api/create_payment.php', {
             method: 'POST', // Метод запроса
