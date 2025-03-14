@@ -9,6 +9,9 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     let headerTitle = document.querySelector(".header-title");
 
     const addressInput = document.querySelector(".addressInput");
+    const addressInputLabel = document.querySelector(".addressInputLabel");
+    
+
     const phoneInput = document.querySelector(".phoneInput");
     const isWhatsapp = document.querySelector(".isWhatsapp");
 
@@ -39,7 +42,9 @@ document.addEventListener("DOMContentLoaded", async (event) => {
                     name: city.name,
                     img: city.img,
                     price: `${city.price} бат`,
-                    description: city.description
+                    description: city.description,
+                    place_from: city.place_from,
+                    place_from_label: city.place_from_label
                 }));
                 
                 console.log('Обновленные данные:', cities);
@@ -51,13 +56,8 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         }
     }
     let citys;
-    // Использование
-    await getCities().then(cities => {
-        // Ваша логика работы с данными
-        citys = cities; // Обновленный массив
-        console.log(citys)
-    });
-
+    
+    console.log("await getCities()")
     let activeCity = null;
     let activeDate = null;
     let activeAddress = null;
@@ -125,8 +125,15 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             
         }
     });
-    function initCitys()
+    async function initCitys()
     {
+        // Использование
+        await getCities().then(cities => {
+            // Ваша логика работы с данными
+            citys = cities; // Обновленный массив
+            console.log("citys", citys)
+        });
+
         let cityList = document.querySelector(".city-list");
 
         citys.forEach((city) => {
@@ -162,6 +169,18 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         {
             var description = document.querySelector(".city_description");
 
+            addressInputLabel.innerText = city.place_from_label;
+
+            addressInput.value = city.place_from;
+
+            if(city.place_from != undefined)
+            {
+                addressInput.disabled = true;
+            }
+            else
+            {
+                addressInput.disabled = false;
+            }
 
             dataForSend.description.city = city.name;
 
@@ -326,7 +345,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 
         var inputPhoneMask = IMask(phoneInput, {
             mask: [ {
-                mask: "+000-0000-0000",
+                mask: "+00 (000) 000-00-00",
                 startsWith: "66",
                 lazy: false,
                 country: "Таиланд",
@@ -453,12 +472,12 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     }
     function init() {
         initTelegramWebApp();
-        initCitys();
         //checkTheme();
         initFix();
         initDate();
         initAddress();
         initChat();
+        initCitys();
     }
 
     init();
