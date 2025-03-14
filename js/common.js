@@ -328,6 +328,15 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             updateAddress();
         });
 
+        phoneInput.addEventListener("input", function() {
+            updateAddress();
+        });
+
+        isWhatsapp.addEventListener("input", function() {
+            updateAddress();
+        });
+
+
         var inputPhoneMask = IMask(phoneInput, {
             mask: [ {
                 mask: "+000-0000-0000",
