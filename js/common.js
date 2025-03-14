@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 
     const addressInput = document.querySelector(".addressInput");
     const phoneInput = document.querySelector(".phoneInput");
-    var isWhatsapp = document.querySelector(".isWhatsapp");
+    const isWhatsapp = document.querySelector(".isWhatsapp");
 
 
     var dataForSend = {
@@ -236,6 +236,8 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         document.querySelector("#payment-form").innerHTML = "";
 
         dataForSend.description.count = document.querySelector(".ticketCount").value;
+        dataForSend.description.phone = phoneInput.value;
+        dataForSend.description.isWhatsapp = isWhatsapp.value;
 
 
         // Отправляем POST-запрос
@@ -326,14 +328,6 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             updateAddress();
         });
 
-        phoneInput.addEventListener("input", function() {
-            updateAddress();
-        });
-
-        isWhatsapp.addEventListener("input", function() {
-            updateAddress();
-        });
-
         var inputPhoneMask = IMask(phoneInput, {
             mask: [ {
                 mask: "+000-0000-0000",
@@ -378,8 +372,6 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         }
 
         dataForSend.description.place = activeAddress;
-        dataForSend.description.phone = phoneInput.value;
-        dataForSend.description.isWhatsapp = isWhatsapp.value;
 
         console.log("dataForSend", dataForSend);
     }
