@@ -312,19 +312,6 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     {
 
         addressInput.addEventListener("input", function() {
-            // Сохраняем позицию курсора
-            const start = this.selectionStart;
-            const end = this.selectionEnd;
-            
-            // Удаляем все символы, кроме латинских букв, цифр, пробелов, точек, запятых и дефисов
-            this.value = this.value.replace(/[^a-zA-Z0-9\s.,-]/g, '');
-            
-            // Корректируем позицию курсора после изменения значения
-            const newLength = this.value.length;
-            const newStart = Math.min(start, newLength);
-            const newEnd = Math.min(end, newLength);
-            this.setSelectionRange(newStart, newEnd);
-            
             updateAddress();
         });
 
