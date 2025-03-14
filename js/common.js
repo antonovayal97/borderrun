@@ -1,20 +1,15 @@
-window.BACKEND_URL = "http://localhost/";
-
 document.addEventListener("DOMContentLoaded", async (event) => {
-    const html = document.querySelector("html");
 
-    const mainButton = Telegram.WebApp.MainButton;
-    const backButton = Telegram.WebApp.BackButton;
+    var mainButton = Telegram.WebApp.MainButton;
+    var backButton = Telegram.WebApp.BackButton;
 
-    let headerTitle = document.querySelector(".header-title");
-
-    const addressInput = document.querySelector(".addressInput");
-    const addressInputLabel = document.querySelector(".addressInputLabel");
-    
-
-    const phoneInput = document.querySelector(".phoneInput");
-    const isWhatsapp = document.querySelector(".isWhatsapp");
-
+    var html = document.querySelector("html");
+    var headerTitle = document.querySelector(".header-title");
+    var addressInput = document.querySelector(".addressInput");
+    var addressInputLabel = document.querySelector(".addressInputLabel");
+    var phoneInput = document.querySelector(".phoneInput");
+    var isWhatsapp = document.querySelector(".isWhatsapp");
+    var flatpickrInstance;
 
     var dataForSend = {
         description: {
@@ -30,14 +25,17 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         order_code: null
     };
     
-    async function getCities() {
-        try {
-            const response = await fetch('https://24asia-service.ru/api/get_cities.php');
-            const data = await response.json();
+    async function getCities()
+    {
+        try
+        {
+            var response = await fetch('https://24asia-service.ru/api/get_cities.php');
+            var data = await response.json();
             
-            if(data.status === 'success') {
+            if(data.status === 'success')
+            {
                 // Преобразование данных для использования в приложении
-                const cities = data.data.map(city => ({
+                var cities = data.data.map(city => ({
                     id: city.id,
                     name: city.name,
                     img: city.img,
@@ -47,26 +45,25 @@ document.addEventListener("DOMContentLoaded", async (event) => {
                     place_from_label: city.place_from_label
                 }));
                 
-                console.log('Обновленные данные:', cities);
                 return cities;
             }
-        } catch(error) {
+        }
+        catch(error)
+        {
             console.error('Ошибка при загрузке данных:', error);
             return [];
         }
     }
-    let citys;
-    
-    console.log("await getCities()")
-    let activeCity = null;
-    let activeDate = null;
-    let activeAddress = null;
-    let currentStage = 0;
-    const totalStages = 7;
-    let stageNum = 0;
-    let flatpickrInstance;
 
-    const stagesObjects = [
+    var citys;
+    var activeCity = null;
+    var activeDate = null;
+    var activeAddress = null;
+    var currentStage = 0;
+    var totalStages = 7;
+    var stageNum = 0;
+
+    var stagesObjects = [
         {
             title: "",
             button: "Начать"
@@ -96,49 +93,57 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             button: "Оплатить"
         }
     ];
+
     // Флаг для блокировки анимации
-    let isAnimating = false;
+    var isAnimating = false;
 
     // Единый обработчик для MainButton
-    const handleMainButtonClick = () => {
-        if (currentStage === totalStages - 1) {
+    var handleMainButtonClick = () => {
+        if (currentStage === totalStages - 1)
+        {
             Telegram.WebApp.sendData(JSON.stringify({action: 'finish'}));
-        } else {
+        }
+        else
+        {
             changeStage(currentStage + 1);
         }
     };
+
     document.addEventListener('keydown', (event) => {
         // Проверяем, что нажат пробел И фокус не в поле ввода/текстовой области
-        if (event.code === 'Space' && !['INPUT', 'TEXTAREA'].includes(event.target.tagName)) {
+        if (event.code === 'Space' && !['INPUT', 'TEXTAREA'].includes(event.target.tagName))
+        {
             event.preventDefault(); // Отменяем стандартное действие (опционально)
             stageNum++;
             changeStage(stageNum);
         }
 
-        if (event.altKey && !['INPUT', 'TEXTAREA'].includes(event.target.tagName)) {
+        if (event.altKey && !['INPUT', 'TEXTAREA'].includes(event.target.tagName))
+        {
             event.preventDefault(); // Отменяем стандартное действие (опционально)
+
             if(stageNum != 0 )
             {
                 stageNum--;
             }
+
             changeStage(stageNum);
-            
         }
     });
+
     async function initCitys()
     {
-        // Использование
         await getCities().then(cities => {
             // Ваша логика работы с данными
             citys = cities; // Обновленный массив
-            console.log("citys", citys)
         });
 
-        let cityList = document.querySelector(".city-list");
+        var cityList = document.querySelector(".city-list");
 
         citys.forEach((city) => {
             // Создаем элемент div
-            let cityCard = document.createElement("div");
+            var cityCard = document.createElement("div");
+
             // Добавляем классы и HTML-содержимое
             cityCard.dataset.id = city.id;
             cityCard.className = "city-card flex items-center p-2 rounded-2xl bg-base-200 cursor-pointer";
@@ -153,6 +158,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             cityCard.addEventListener("click",() => {
                 updateCity(cityCard,city)
             })
+
             // Добавляем созданный элемент в список
             cityList.appendChild(cityCard);
         });
@@ -164,7 +170,9 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         {
             return
         }
+
         activeCity = (noda.dataset.id != undefined) ? noda.dataset.id : null;
+
         if(activeCity)
         {
             var description = document.querySelector(".city_description");
@@ -172,22 +180,16 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             addressInputLabel.innerText = city.place_from_label;
 
             addressInput.value = city.place_from;
-
-            if(city.place_from != undefined)
-            {
-                addressInput.disabled = true;
-            }
-            else
-            {
-                addressInput.disabled = false;
-            }
+            addressInput.disabled = (city.place_from != undefined) ? true : false;
 
             dataForSend.description.city = city.name;
 
-            let cards = document.querySelectorAll(".city-card");
+            var cards = document.querySelectorAll(".city-card");
+
             cards.forEach((card) => {
                 card.classList.remove("active");
-            })
+            });
+
             noda.classList.add("active");
 
             dataForSend.order_code = activeCity;
@@ -200,55 +202,45 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         }
     }
 
-
-    function changeStage(newStage) {
+    function changeStage(newStage)
+    {
         if (isAnimating) return;
         isAnimating = true;
 
-        if(newStage != 0)
-        {
-            //flatpickrInstance.close();  
-        }
+        if (newStage) flatpickrInstance.close();
 
-        const prevStage = currentStage;
+        var prevStage = currentStage;
+
         currentStage = Math.max(0, Math.min(newStage, totalStages - 1));
 
-        const prevElement = document.querySelector(`.stage_${prevStage}`);
-        const currentElement = document.querySelector(`.stage_${currentStage}`);
+        var prevElement = document.querySelector(`.stage_${prevStage}`);
+        var currentElement = document.querySelector(`.stage_${currentStage}`);
 
         if
         (
-            currentStage == 2 && activeCity == null || 
-            currentStage == 4 && activeDate == null ||
-            currentStage == 5 && activeAddress == null
+            (currentStage == 2 && !activeCity) ||
+            (currentStage == 4 && !activeDate) ||
+            (currentStage == 5 && !activeAddress) ||
+            currentStage == 6
         )
         {
-            mainButton
-            .disable()
-            .hide()
-        }
-        else if(currentStage == 6)
-        {
-            mainButton
-            .disable()
-            .hide()
-
-            initPayments();
+            mainButton.disable().hide();
+            if(currentStage == 6) initPayments();
         }
         else
         {
-            mainButton
-            .enable()
-            .show()
-        }
+            mainButton.enable().show();
+        }        
+
         setTimeout(() => {
             prevElement.style.display = 'none';
             currentElement.style.display = 'block';
+
             updateUI();
+
             isAnimating = false;
         }, 100);
     }
-
 
     function initPayments()
     {
@@ -257,7 +249,6 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         dataForSend.description.count = document.querySelector(".ticketCount").value;
         dataForSend.description.phone = phoneInput.value;
         dataForSend.description.isWhatsapp = isWhatsapp.value;
-
 
         // Отправляем POST-запрос
         fetch('https://24asia-service.ru/api/create_payment.php', {
@@ -273,10 +264,9 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             {
                 return false
             }
-            const checkout = new window.YooMoneyCheckoutWidget({
+            var checkout = new window.YooMoneyCheckoutWidget({
                 confirmation_token: result.token, //Токен, который перед проведением оплаты нужно получить от ЮKassa
                 return_url: 'https://24asia-service.ru/success_page/', //Ссылка на страницу завершения оплаты, это может быть любая ваша страница
-
                 //При необходимости можно изменить цвета виджета, подробные настройки см. в документации
                 customization: {
                 //Настройка цветовой схемы, минимум один параметр, значения цветов в HEX
@@ -288,7 +278,8 @@ document.addEventListener("DOMContentLoaded", async (event) => {
                         background: "#FFFFFF" //Значение цвета в HEX
                     }
                 },
-                error_callback: function(error) {
+                error_callback: function(error)
+                {
                     console.log(error)
                 }
             });
@@ -303,13 +294,13 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 
     function initDate()
     {
-        const dateInput = document.querySelector('.date-pick__element');
+        var dateInput = document.querySelector('.date-pick__element');
 
-        const now = new Date();
-        const currentHour = now.getHours();
+        var now = new Date();
+        var currentHour = now.getHours();
 
         // Если текущее время больше 12:00, блокируем текущий день и следующий день
-        const minDate = currentHour >= 12 ? new Date(now.setDate(now.getDate() + 2)) : new Date(now.setDate(now.getDate() + 1));
+        var minDate = currentHour >= 12 ? new Date(now.setDate(now.getDate() + 2)) : new Date(now.setDate(now.getDate() + 1));
 
         flatpickrInstance = flatpickr(dateInput, {
             minDate: minDate,
@@ -318,7 +309,8 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             altFormat: "F j, Y",
             dateFormat: "d.m.Y", // Формат даты: ДД.ММ.ГГГГ
             locale: "ru", // Локализация на русский
-            onChange: function(selectedDates, dateStr) {
+            onChange: function(selectedDates, dateStr)
+            {
                 activeDate = dateStr;
                 dataForSend.description.date = activeDate;
                 mainButton
@@ -327,9 +319,9 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             }
           });
     }
+
     function initAddress()
     {
-
         addressInput.addEventListener("input", function() {
             updateAddress();
         });
@@ -341,7 +333,6 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         isWhatsapp.addEventListener("input", function() {
             updateAddress();
         });
-
 
         var inputPhoneMask = IMask(phoneInput, {
             mask: [ {
@@ -360,78 +351,61 @@ document.addEventListener("DOMContentLoaded", async (event) => {
                 country: "Страна не определена",
             }, ],
             dispatch: (appended, dynamicMasked) => {
-                const number = (dynamicMasked.value + appended).replace(/\D/g, "");
+                var number = (dynamicMasked.value + appended).replace(/\D/g, "");
                 return dynamicMasked.compiledMasks.find( (m) => number.indexOf(m.startsWith) === 0);
             }
         });
     }
 
-
     function updateAddress()
     {
         activeAddress = (addressInput.value.length > 0) ? addressInput.value : null;
 
-        if(activeAddress && phoneInput.value.length > 7)
-        {
-            mainButton
-            .enable()
-            .show()
-
-            console.log("Адрес и номер телефона")
-        }
-        else
-        {
-            mainButton
-            .disable()
-            .hide()
-        }
+        (activeAddress && phoneInput.value.length > 7 ? mainButton.enable().show() : mainButton.disable().hide());
 
         dataForSend.description.place = activeAddress;
-
-        console.log("dataForSend", dataForSend);
     }
-    function updateUI() {
+
+    function updateUI()
+    {
         // Обновление BackButton
         backButton[currentStage > 0 ? 'show' : 'hide']();
 
-        if(stagesObjects[currentStage].title != "")
-        {
-            headerTitle.innerText = stagesObjects[currentStage].title;
-        }
-        else
-        {
-            headerTitle.innerText = "";
-        }
+        headerTitle.innerText = (stagesObjects[currentStage].title != "") ? headerTitle.innerText = stagesObjects[currentStage].title : "";
+
         // Обновление MainButton
         mainButton
             .setText(stagesObjects[currentStage].button)
             .offClick(handleMainButtonClick) // Важно: удаляем предыдущий обработчик
             .onClick(handleMainButtonClick);
 
-        if (currentStage === totalStages - 1) {
-            mainButton.setParams({color: '#32a852'});
-        } else {
-            mainButton.setParams({color: Telegram.WebApp.themeParams.button_color});
-        }
+        mainButton.setParams({
+            color: currentStage === totalStages - 1 
+            ? '#32a852' 
+            : Telegram.WebApp.themeParams.button_color
+        });
     }
 
     function initFix()
     {
         document.addEventListener('click', (event) => {
-            const tags = ['INPUT', 'TEXTAREA']
-            const focused = document.activeElement
-            console.log(focused.tagName)
-            if (focused && focused !== event.target && tags.includes(focused.tagName)) {
+            var tags = ['INPUT', 'TEXTAREA']
+            var focused = document.activeElement
+            if (focused && focused !== event.target && tags.includes(focused.tagName))
+            {
               focused.blur()
             }
           })
     }
-    function initTelegramWebApp() {
+
+    function initTelegramWebApp()
+    {
         Telegram.WebApp.ready();
         
-        const user = Telegram.WebApp.initDataUnsafe?.user;
+        var user = Telegram.WebApp.initDataUnsafe?.user;
 
-        if (user) {
+        if (user)
+        {
             dataForSend.description.telegram_name = user?.username || null;
             dataForSend.description.telegram_id = user?.id || null;
         }
@@ -448,16 +422,18 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             .show();
 
         changeStage(stageNum);
-        //changeStage(5);
     }
-    function checkTheme() {
-        const theme = Telegram.WebApp.colorScheme === "light" ? "light" : "dark";
+
+    function checkTheme()
+    {
+        var theme = Telegram.WebApp.colorScheme === "light" ? "light" : "dark";
         html.dataset.theme = theme;
-        //html.dataset.theme = "dark";
+
         document.querySelectorAll(".theme-controller").forEach(controller => {
             controller.value = theme === "light" ? "dark" : "light";
         });
     }
+
     function initChat()
     {
         var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
@@ -470,9 +446,10 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         s0.parentNode.insertBefore(s1,s0);
         })();
     }
-    function init() {
+
+    function init()
+    {
         initTelegramWebApp();
-        //checkTheme();
         initFix();
         initDate();
         initAddress();
