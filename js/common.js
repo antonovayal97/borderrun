@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             button: "Выбрать"
         },
         {
-            title: "Описание",
+            title: "Как проходит бордер-ран",
             button: "Продолжить"
         },
         {
