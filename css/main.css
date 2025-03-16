@@ -727,25 +727,6 @@ video {
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg width='24' height='24' stroke='black' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform-origin='center'%3E%3Ccircle cx='12' cy='12' r='9.5' fill='none' stroke-width='3' stroke-linecap='round'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 12 12' to='360 12 12' dur='2s' repeatCount='indefinite'/%3E%3Canimate attributeName='stroke-dasharray' values='0,150;42,150;42,150' keyTimes='0;0.475;1' dur='1.5s' repeatCount='indefinite'/%3E%3Canimate attributeName='stroke-dashoffset' values='0;-16;-59' keyTimes='0;0.475;1' dur='1.5s' repeatCount='indefinite'/%3E%3C/circle%3E%3C/g%3E%3C/svg%3E");
           mask-image: url("data:image/svg+xml,%3Csvg width='24' height='24' stroke='black' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform-origin='center'%3E%3Ccircle cx='12' cy='12' r='9.5' fill='none' stroke-width='3' stroke-linecap='round'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 12 12' to='360 12 12' dur='2s' repeatCount='indefinite'/%3E%3Canimate attributeName='stroke-dasharray' values='0,150;42,150;42,150' keyTimes='0;0.475;1' dur='1.5s' repeatCount='indefinite'/%3E%3Canimate attributeName='stroke-dashoffset' values='0;-16;-59' keyTimes='0;0.475;1' dur='1.5s' repeatCount='indefinite'/%3E%3C/circle%3E%3C/g%3E%3C/svg%3E");
 }
-.validator:user-valid, .validator:user-valid:focus, .validator:user-valid:checked, .validator:user-valid[aria-checked="true"], .validator:user-valid:focus-within, .validator:has(:user-valid), .validator:has(:user-valid):focus, .validator:has(:user-valid):checked, .validator:has(:user-valid)[aria-checked="true"], .validator:has(:user-valid):focus-within {
-  --input-color: var(--color-success);
-}
-.validator:user-invalid, .validator:user-invalid:focus, .validator:user-invalid:checked, .validator:user-invalid[aria-checked="true"], .validator:user-invalid:focus-within, .validator:has(:user-invalid), .validator:has(:user-invalid):focus, .validator:has(:user-invalid):checked, .validator:has(:user-invalid)[aria-checked="true"], .validator:has(:user-invalid):focus-within {
-  --input-color: var(--color-error);
-}
-.validator:user-invalid ~ .validator-hint, .validator:has(:user-invalid) ~ .validator-hint {
-  visibility: visible;
-  display: block;
-  color: var(--color-error);
-}
-.validator ~ .validator-hint {
-  visibility: hidden;
-}
-.validator-hint {
-  margin-top: calc(0.25rem * 2);
-  font-size: var(--text-xs);
-  line-height: var(--tw-leading, var(--text-xs--line-height));
-}
 .progress {
   position: relative;
   height: calc(0.25rem * 2);
@@ -1152,6 +1133,14 @@ video {
   background-image: radial-gradient( circle at 35% 30%, oklch(1 0 0 / calc(var(--depth) * 0.5)), #0000 );
   box-shadow: 0 2px 3px -1px color-mix(in oklab, currentColor calc(var(--depth) * 100%), #0000);
 }
+.steps {
+  display: inline-grid;
+  grid-auto-flow: column;
+  overflow: hidden;
+  overflow-x: auto;
+  counter-reset: step;
+  grid-auto-columns: 1fr;
+}
 .steps .step {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -1199,6 +1188,38 @@ video {
 }
 .steps .step[data-content]:after {
   content: attr(data-content);
+}
+.steps .step-neutral + .step-neutral:before, .steps .step-neutral:after, .steps .step-neutral > .step-icon {
+  --step-bg: var(--color-neutral);
+  --step-fg: var(--color-neutral-content);
+}
+.steps .step-primary + .step-primary:before, .steps .step-primary:after, .steps .step-primary > .step-icon {
+  --step-bg: var(--color-primary);
+  --step-fg: var(--color-primary-content);
+}
+.steps .step-secondary + .step-secondary:before, .steps .step-secondary:after, .steps .step-secondary > .step-icon {
+  --step-bg: var(--color-secondary);
+  --step-fg: var(--color-secondary-content);
+}
+.steps .step-accent + .step-accent:before, .steps .step-accent:after, .steps .step-accent > .step-icon {
+  --step-bg: var(--color-accent);
+  --step-fg: var(--color-accent-content);
+}
+.steps .step-info + .step-info:before, .steps .step-info:after, .steps .step-info > .step-icon {
+  --step-bg: var(--color-info);
+  --step-fg: var(--color-info-content);
+}
+.steps .step-success + .step-success:before, .steps .step-success:after, .steps .step-success > .step-icon {
+  --step-bg: var(--color-success);
+  --step-fg: var(--color-success-content);
+}
+.steps .step-warning + .step-warning:before, .steps .step-warning:after, .steps .step-warning > .step-icon {
+  --step-bg: var(--color-warning);
+  --step-fg: var(--color-warning-content);
+}
+.steps .step-error + .step-error:before, .steps .step-error:after, .steps .step-error > .step-icon {
+  --step-bg: var(--color-error);
+  --step-fg: var(--color-error-content);
 }
 .steps-horizontal .step {
   display: grid;
@@ -1708,6 +1729,16 @@ video {
   cursor: not-allowed;
   opacity: 30%;
 }
+.\!mask {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  -webkit-mask-size: contain !important;
+          mask-size: contain !important;
+  -webkit-mask-repeat: no-repeat !important;
+          mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+          mask-position: center !important;
+}
 .mask {
   display: inline-block;
   vertical-align: middle;
@@ -1750,6 +1781,9 @@ video {
 }
 .static {
   position: static;
+}
+.fixed {
+  position: fixed;
 }
 .sticky {
   position: sticky;
@@ -1815,9 +1849,6 @@ video {
 }
 .w-28 {
   width: 7rem;
-}
-.w-64 {
-  width: 16rem;
 }
 .w-80 {
   width: 20rem;
@@ -1885,6 +1916,10 @@ video {
 .p-4 {
   padding: 1rem;
 }
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -1896,13 +1931,6 @@ video {
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
-}
-.px-2 {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
-.pr-4 {
-  padding-right: 1rem;
 }
 .text-center {
   text-align: center;
@@ -1939,10 +1967,6 @@ video {
 }
 .italic {
   font-style: italic;
-}
-.tabular-nums {
-  --tw-numeric-spacing: tabular-nums;
-  font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
 }
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);

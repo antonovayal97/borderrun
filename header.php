@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
-        <script src="https://unpkg.com/imask"></script>
+        <script src="<?=SITE_TEMPLATE_PATH?>/libs/imask.js"></script>
         <script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js"></script>
         <? 
         endif;

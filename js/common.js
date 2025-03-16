@@ -334,7 +334,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             updateAddress();
         });
 
-        /*var inputPhoneMask = IMask(phoneInput, {
+        var inputPhoneMask = IMask(phoneInput, {
             mask: [ {
                 mask: "+00 (000) 000-00-00",
                 startsWith: "66",
@@ -354,7 +354,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
                 var number = (dynamicMasked.value + appended).replace(/\D/g, "");
                 return dynamicMasked.compiledMasks.find( (m) => number.indexOf(m.startsWith) === 0);
             }
-        });*/
+        });
     }
 
     function updateAddress()
